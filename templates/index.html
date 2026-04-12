@@ -19,7 +19,6 @@
         font-family: "Segoe UI", system-ui, sans-serif;
       }
 
-      /* FIXED: Using 100dvh to prevent bottom bar from hiding behind mobile browser UI */
       html,
       body {
         height: 100%;
@@ -140,14 +139,13 @@
         flex-direction: column;
         gap: 24px;
         scrollbar-width: none;
-        margin-top: 70px; /* Space for fixed header elements */
+        margin-top: 70px;
         -webkit-overflow-scrolling: touch;
       }
       .chat-box::-webkit-scrollbar {
         display: none;
       }
 
-      /* --- NEW SCROLLABLE HEADER (Inside Chat Box) --- */
       .chat-header {
         text-align: center;
         margin: auto 0;
@@ -624,7 +622,6 @@
            📱 RESPONSIVE MEDIA QUERIES (MOBILE/TABLET)
            ========================================= */
       @media (max-width: 768px) {
-        /* Adjust Top Stats */
         .stats-dashboard {
           top: 10px;
           left: 10px;
@@ -642,7 +639,6 @@
           font-size: 0.75em;
         }
 
-        /* Chat Area & Header */
         .chat-box {
           margin-top: 60px;
           padding: 10px 15px;
@@ -668,42 +664,42 @@
           font-size: 0.85em;
         }
 
-        /* Bottom Input Area */
         .bottom-section {
           padding-bottom: 15px;
         }
         .input-wrapper {
           padding: 5px 5px 5px 15px;
-          height: 50px;
+          height: 55px;
           gap: 10px;
         }
         input[type="text"] {
           font-size: 1.1em;
         }
 
-        /* Perfect circle send button */
-        .send-btn {
-          width: 40px;
-          min-width: 40px;
-          height: 40px;
-          padding: 0;
-          border-radius: 50%;
+        .input-wrapper .send-btn {
+          width: 44px !important;
+          min-width: 44px !important;
+          max-width: 44px !important;
+          height: 44px !important;
+          padding: 0 !important;
+          border-radius: 50% !important;
+          flex-shrink: 0;
         }
         .send-text {
           display: none;
         }
-        .send-btn span:last-child {
+        .input-wrapper .send-btn span:last-child {
           font-size: 1.5em !important;
           margin-top: -2px;
+          margin-left: 0;
         }
 
         .outside-reveal-btn {
-          height: 50px;
+          height: 55px;
           padding: 0 15px;
           font-size: 0.95em;
         }
 
-        /* Horizontal scrolling Action Bar */
         .action-bar {
           flex-wrap: nowrap;
           overflow-x: auto;
@@ -724,7 +720,6 @@
           font-size: 0.9em;
         }
 
-        /* Game Hub Modals */
         .close-game-btn {
           top: 10px;
           right: 15px;
@@ -764,8 +759,8 @@
           flex-direction: column;
           gap: 10px;
         }
-        .reveal-btn,
-        .send-btn {
+        .btn-row .reveal-btn,
+        .btn-row .send-btn {
           width: 100%;
           height: 50px;
           font-size: 1.1em !important;
@@ -834,9 +829,6 @@
             onclick="useSuggestion('Give me a random riddle')"
           >
             🎲 Riddle
-          </button>
-          <button class="action-btn" onclick="getInspiration()">
-            💡 Inspire Me
           </button>
         </div>
       </div>
@@ -1100,9 +1092,7 @@
           </p>
           <h3 style="color: #fff">Prashant Singh Suriya</h3>
           <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
-          <p style="font-size: 0.8em; color: #38bdf8">
-            v14.5 • Ultimate Mobile Fix
-          </p>
+          <p style="font-size: 0.8em; color: #38bdf8">v15.0 • Streamlined UI</p>
         </div>
       </div>
     </div>
@@ -1114,7 +1104,6 @@
       const suggestionsBox = document.getElementById("suggestions");
       let isFirstMessage = true;
 
-      // --- 25 MOTIVATIONAL SUB-GREETINGS / QUOTES ---
       const motivationalLines = [
         "Your brain called, it wants a challenge.",
         "Fuel your curiosity.",
@@ -1152,34 +1141,6 @@
         greetingEl.innerText = randomLine;
       }
 
-      // --- INSTANT INSPIRATION FUNCTION ---
-      function getInspiration() {
-        if (isFirstMessage) {
-          heroArea.style.display = "none";
-          isFirstMessage = false;
-        }
-
-        appendMessage("user", "💡 Inspire Me");
-
-        const loadingId = "loading-" + Date.now();
-        const loadingDiv = document.createElement("div");
-        loadingDiv.className = "message bot-message";
-        loadingDiv.id = loadingId;
-        loadingDiv.innerHTML = '<span class="loading-text">...</span>';
-        chatBox.appendChild(loadingDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-
-        setTimeout(() => {
-          document.getElementById(loadingId).remove();
-          const quote =
-            motivationalLines[
-              Math.floor(Math.random() * motivationalLines.length)
-            ];
-          appendMessage("bot", `✨ *"${quote}"*`);
-        }, 500);
-      }
-
-      // --- STATS LOGIC ---
       let solvedCount = parseInt(localStorage.getItem("solvedCount")) || 0;
       let totalMinutes = parseInt(localStorage.getItem("totalMinutes")) || 0;
       let streakCount = parseInt(localStorage.getItem("streakCount")) || 0;
@@ -1220,7 +1181,6 @@
         updateStatsDisplay();
       }
 
-      // --- 50 EXPANDED & DESCRIPTIVE SUGGESTIONS ---
       const allSuggestions = [
         {
           query: "How do airplanes stay in the air?",
@@ -1525,7 +1485,6 @@
         if (event.key === "Enter") sendMessage();
       }
 
-      // --- OVERLAYS & GAME HUB ---
       function toggleAbout() {
         document.getElementById("about-overlay").classList.toggle("active");
       }
@@ -1555,7 +1514,6 @@
         }
       }
 
-      // --- GAME 1: WORD SCRAMBLE (API DRIVEN + REVEAL ANSWER) ---
       const backupDB = {
         easy: [
           {
@@ -1731,7 +1689,6 @@
         if (event.key === "Enter") checkScrambleAnswer();
       }
 
-      // --- GAME 2: MATH SPRINT ---
       let currentMathAnswer = 0;
       let currentMathDifficulty = "medium";
       let lastMathEquation = "";
@@ -1829,7 +1786,6 @@
         if (event.key === "Enter") checkMathAnswer();
       }
 
-      // --- GAME 3: COLOR CLASH ---
       const colorData = [
         { name: "RED", hex: "#f43f5e" },
         { name: "BLUE", hex: "#38bdf8" },
@@ -1874,7 +1830,6 @@
         }
       }
 
-      // --- INITIALIZATION ---
       window.onload = () => {
         checkDailyStreak();
         setRandomGreeting();
