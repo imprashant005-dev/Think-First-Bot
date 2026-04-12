@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Think First Bot</title>
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -16,13 +19,14 @@
         font-family: "Segoe UI", system-ui, sans-serif;
       }
 
+      /* FIXED: Using 100dvh to prevent bottom bar from hiding behind mobile browser UI */
+      html,
       body {
-        height: 100vh;
-        width: 100vw;
+        height: 100%;
+        height: 100dvh;
+        width: 100%;
         overflow: hidden;
         color: #e3e3e3;
-        display: flex;
-        justify-content: center;
         background-color: #020617;
         background-image:
           radial-gradient(
@@ -73,6 +77,7 @@
         display: flex;
         flex-direction: column;
         position: relative;
+        margin: 0 auto;
       }
 
       /* --- TOP DASHBOARD ELEMENTS --- */
@@ -85,7 +90,7 @@
         z-index: 10;
         width: max-content;
         flex-wrap: wrap;
-        max-width: 70%;
+        max-width: 65%;
       }
 
       .stat-item {
@@ -125,13 +130,29 @@
         border-color: rgba(255, 255, 255, 0.4);
       }
 
-      /* --- HEADER --- */
+      /* --- CHAT AREA --- */
+      .chat-box {
+        flex-grow: 1;
+        padding: 20px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        scrollbar-width: none;
+        margin-top: 70px; /* Space for fixed header elements */
+        -webkit-overflow-scrolling: touch;
+      }
+      .chat-box::-webkit-scrollbar {
+        display: none;
+      }
+
+      /* --- NEW SCROLLABLE HEADER (Inside Chat Box) --- */
       .chat-header {
-        padding-top: 15vh;
         text-align: center;
+        margin: auto 0;
+        padding: 20px 0;
         transition: opacity 0.5s ease;
-        padding-left: 15px;
-        padding-right: 15px;
       }
       .gradient-text {
         font-size: 3.8em;
@@ -161,8 +182,8 @@
         flex-wrap: wrap;
         gap: 14px;
         justify-content: center;
-        padding: 20px;
-        margin-top: 20px;
+        padding: 20px 0;
+        margin-top: 10px;
       }
       .suggestion-chip {
         background-color: rgba(255, 255, 255, 0.03);
@@ -183,20 +204,6 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       }
 
-      /* --- CHAT AREA --- */
-      .chat-box {
-        flex-grow: 1;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        scrollbar-width: none;
-        margin-top: 90px;
-      }
-      .chat-box::-webkit-scrollbar {
-        display: none;
-      }
       .message {
         width: fit-content;
         max-width: 85%;
@@ -228,13 +235,14 @@
 
       /* --- BOTTOM SECTION --- */
       .bottom-section {
-        padding-bottom: 40px;
+        padding-bottom: 25px;
         width: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
         padding-left: 15px;
         padding-right: 15px;
+        z-index: 100;
       }
 
       .bottom-area-row {
@@ -345,7 +353,7 @@
       .action-bar {
         display: flex;
         gap: 15px;
-        margin-top: 20px;
+        margin-top: 15px;
         flex-wrap: wrap;
         justify-content: center;
         width: 100%;
@@ -374,6 +382,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
+        height: 100dvh;
         background-color: #020617;
         background-image:
           radial-gradient(
@@ -412,6 +421,7 @@
         pointer-events: none;
         transition: 0.4s ease-in-out;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
       .game-overlay.active {
         opacity: 1;
@@ -632,45 +642,50 @@
           font-size: 0.75em;
         }
 
-        /* Adjust Headers */
-        .chat-header {
-          padding-top: 12vh;
+        /* Chat Area & Header */
+        .chat-box {
+          margin-top: 60px;
+          padding: 10px 15px;
+          gap: 15px;
         }
         .gradient-text {
           font-size: 2.8em;
         }
         .sub-greeting {
           font-size: 1.1em;
-        }
-
-        /* Chat Area */
-        .chat-box {
-          margin-top: 80px;
-          padding: 15px;
-          gap: 15px;
+          margin-top: 5px;
         }
         .message {
           font-size: 1.1em;
           max-width: 90%;
         }
+        .suggestions-container {
+          padding: 10px 0;
+          gap: 8px;
+        }
+        .suggestion-chip {
+          padding: 10px 15px;
+          font-size: 0.85em;
+        }
 
         /* Bottom Input Area */
         .bottom-section {
-          padding-bottom: 25px;
+          padding-bottom: 15px;
         }
         .input-wrapper {
-          padding: 6px 6px 6px 15px;
-          height: 55px;
+          padding: 5px 5px 5px 15px;
+          height: 50px;
+          gap: 10px;
         }
         input[type="text"] {
           font-size: 1.1em;
         }
 
-        /* PERFECT CIRCLE SEND BUTTON FOR MOBILE */
+        /* Perfect circle send button */
         .send-btn {
-          width: 44px;
-          min-width: 44px;
-          height: 44px;
+          width: 40px;
+          min-width: 40px;
+          height: 40px;
           padding: 0;
           border-radius: 50%;
         }
@@ -678,27 +693,30 @@
           display: none;
         }
         .send-btn span:last-child {
-          font-size: 1.6em !important;
+          font-size: 1.5em !important;
+          margin-top: -2px;
         }
 
         .outside-reveal-btn {
-          height: 55px;
+          height: 50px;
           padding: 0 15px;
-          font-size: 1em;
+          font-size: 0.95em;
         }
 
-        /* HORIZONTAL SCROLLING FOR MOBILE ACTION BAR */
+        /* Horizontal scrolling Action Bar */
         .action-bar {
           flex-wrap: nowrap;
           overflow-x: auto;
           justify-content: flex-start;
           width: 100%;
-          padding-bottom: 5px; /* Room for touch scroll */
-          scrollbar-width: none; /* Hide scrollbar Firefox */
+          padding-bottom: 5px;
+          scrollbar-width: none;
+          -webkit-overflow-scrolling: touch;
+          gap: 8px;
         }
         .action-bar::-webkit-scrollbar {
           display: none;
-        } /* Hide scrollbar Chrome/Safari */
+        }
         .action-btn {
           white-space: nowrap;
           flex-shrink: 0;
@@ -708,12 +726,12 @@
 
         /* Game Hub Modals */
         .close-game-btn {
-          top: 15px;
+          top: 10px;
           right: 15px;
-          font-size: 35px;
+          font-size: 40px;
         }
         .game-card {
-          padding: 20px 15px;
+          padding: 20px 10px;
         }
         .game-title {
           font-size: 2.4em !important;
@@ -742,7 +760,6 @@
           font-size: 1em;
         }
 
-        /* Stack reveal and submit buttons inside games */
         .btn-row {
           flex-direction: column;
           gap: 10px;
@@ -770,13 +787,15 @@
         <div class="stat-item">⏱️ <span id="time-spent">0</span>m Active</div>
       </div>
 
-      <div class="chat-header" id="hero-area">
-        <span class="gradient-text">Think First.</span>
-        <div class="sub-greeting" id="sub-greeting">Loading inspiration...</div>
-        <div class="suggestions-container" id="suggestions"></div>
+      <div class="chat-box" id="chat-box">
+        <div class="chat-header" id="hero-area">
+          <span class="gradient-text">Think First.</span>
+          <div class="sub-greeting" id="sub-greeting">
+            Loading inspiration...
+          </div>
+          <div class="suggestions-container" id="suggestions"></div>
+        </div>
       </div>
-
-      <div class="chat-box" id="chat-box"></div>
 
       <div class="bottom-section">
         <div class="bottom-area-row">
@@ -1082,7 +1101,7 @@
           <h3 style="color: #fff">Prashant Singh Suriya</h3>
           <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
           <p style="font-size: 0.8em; color: #38bdf8">
-            v14.1 • Final Mobile Fix
+            v14.5 • Ultimate Mobile Fix
           </p>
         </div>
       </div>
