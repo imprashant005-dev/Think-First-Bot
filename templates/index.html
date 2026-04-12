@@ -638,7 +638,6 @@
           padding: 6px 10px;
           font-size: 0.75em;
         }
-
         .chat-box {
           margin-top: 60px;
           padding: 10px 15px;
@@ -663,7 +662,6 @@
           padding: 10px 15px;
           font-size: 0.85em;
         }
-
         .bottom-section {
           padding-bottom: 15px;
         }
@@ -675,7 +673,6 @@
         input[type="text"] {
           font-size: 1.1em;
         }
-
         .input-wrapper .send-btn {
           width: 44px !important;
           min-width: 44px !important;
@@ -693,14 +690,11 @@
           margin-top: -2px;
           margin-left: 0;
         }
-
         .outside-reveal-btn {
           height: 55px;
           padding: 0 15px;
           font-size: 0.95em;
         }
-
-        /* --- UPDATED ACTION BAR MOBILE --- */
         .action-bar {
           display: flex;
           gap: 10px;
@@ -719,7 +713,6 @@
           padding: 10px 18px;
           font-size: 0.9em;
         }
-
         .close-game-btn {
           top: 10px;
           right: 15px;
@@ -732,7 +725,6 @@
           font-size: 2.4em !important;
           margin-bottom: 20px;
         }
-
         #scrambled-word {
           font-size: 2.5em;
           letter-spacing: 2px;
@@ -745,7 +737,6 @@
           font-size: 4em;
           margin: 20px 0;
         }
-
         .game-input-box {
           height: 55px;
           font-size: 1.2em;
@@ -754,7 +745,6 @@
         .hint-text {
           font-size: 1em;
         }
-
         .btn-row {
           flex-direction: column;
           gap: 10px;
@@ -1073,7 +1063,9 @@
           </p>
           <h3 style="color: #fff">Prashant Singh Suriya</h3>
           <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
-          <p style="font-size: 0.8em; color: #38bdf8">v15.0 • API Empowered</p>
+          <p style="font-size: 0.8em; color: #38bdf8">
+            v16.0 • Expanded Knowledge Base
+          </p>
         </div>
       </div>
     </div>
@@ -1085,7 +1077,6 @@
       const suggestionsBox = document.getElementById("suggestions");
       let isFirstMessage = true;
 
-      // NEW: State Management for API Games in Chat
       let chatMode = "normal"; // 'normal', 'quiz', 'riddle'
       let currentChallengeAnswer = "";
 
@@ -1094,6 +1085,12 @@
         "Fuel your curiosity.",
         "Learn something new today.",
         "Train your mind to see the good in everything.",
+        "Small steps every day.",
+        "Expand your horizons.",
+        "Challenge yourself, you'll be surprised.",
+        "Knowledge is your superpower.",
+        "Stay curious, keep learning.",
+        "A workout for your intellect.",
       ];
 
       function setRandomGreeting() {
@@ -1146,20 +1143,435 @@
         updateStatsDisplay();
       }
 
+      // 100 Suggestions Base
       const allSuggestions = [
+        {
+          query: "How do airplanes stay in the air?",
+          icon: "✈️",
+          label: "The Science of Flight",
+        },
         {
           query: "Explain quantum physics to a kid",
           icon: "⚛️",
-          label: "Quantum Physics",
+          label: "Quantum Physics Simplified",
         },
-        { query: "Tell me a dinosaur fact", icon: "🦖", label: "Dino Facts" },
-        { query: "How do magnets work?", icon: "🧲", label: "Magnets" },
+        {
+          query: "Tell me a dinosaur fact",
+          icon: "🦖",
+          label: "Fascinating Dino Facts",
+        },
+        {
+          query: "Explain black holes",
+          icon: "🌌",
+          label: "Mysteries of Black Holes",
+        },
+        {
+          query: "How do magnets work?",
+          icon: "🧲",
+          label: "The Magic of Magnets",
+        },
+        {
+          query: "What is string theory?",
+          icon: "🧶",
+          label: "Unraveling String Theory",
+        },
+        {
+          query: "Why does ice float?",
+          icon: "🧊",
+          label: "The Physics of Ice",
+        },
+        {
+          query: "How do vaccines work?",
+          icon: "💉",
+          label: "How Immunity Works",
+        },
+        {
+          query: "Explain relativity simply",
+          icon: "⏱️",
+          label: "Einstein's Relativity",
+        },
+        {
+          query: "How do lasers work?",
+          icon: "🔦",
+          label: "The Power of Lasers",
+        },
+        { query: "What is DNA?", icon: "🧬", label: "The Secrets of DNA" },
+        {
+          query: "Why is the ocean salty?",
+          icon: "🌊",
+          label: "Why Oceans are Salty",
+        },
+        {
+          query: "How do volcanoes erupt?",
+          icon: "🌋",
+          label: "Inside a Volcano",
+        },
+        {
+          query: "What is dark matter?",
+          icon: "🌑",
+          label: "Hunting for Dark Matter",
+        },
+        {
+          query: "Who built the pyramids?",
+          icon: "🏜️",
+          label: "Building the Pyramids",
+        },
+        {
+          query: "Tell me about the Roman Empire",
+          icon: "🏛️",
+          label: "Rise of Rome",
+        },
+        {
+          query: "When was the printing press invented?",
+          icon: "📚",
+          label: "History of Printing",
+        },
+        {
+          query: "History of the internet",
+          icon: "🌐",
+          label: "Birth of the Internet",
+        },
+        {
+          query: "Who was Nikola Tesla?",
+          icon: "⚡",
+          label: "The Genius of Tesla",
+        },
+        { query: "What started WW1?", icon: "🌍", label: "The Spark of WW1" },
+        {
+          query: "Tell me a samurai fact",
+          icon: "⚔️",
+          label: "Legend of the Samurai",
+        },
+        {
+          query: "History of chocolate",
+          icon: "🍫",
+          label: "The Story of Chocolate",
+        },
+        {
+          query: "Who discovered electricity?",
+          icon: "💡",
+          label: "Discovering Electricity",
+        },
+        {
+          query: "How do bees make honey?",
+          icon: "🐝",
+          label: "How Bees Make Honey",
+        },
+        {
+          query: "Why do leaves change color?",
+          icon: "🍁",
+          label: "The Colors of Autumn",
+        },
+        {
+          query: "Tell me an octopus fact",
+          icon: "🐙",
+          label: "Amazing Octopus Facts",
+        },
+        {
+          query: "How deep is the ocean?",
+          icon: "⚓",
+          label: "Depths of the Ocean",
+        },
+        {
+          query: "How do bats fly in the dark?",
+          icon: "🦇",
+          label: "How Echolocation Works",
+        },
+        {
+          query: "Why do cats sleep so much?",
+          icon: "🐈",
+          label: "The Science of Cat Naps",
+        },
+        {
+          query: "What is the largest animal?",
+          icon: "🐋",
+          label: "Giants of the Sea",
+        },
+        {
+          query: "How do chameleons change color?",
+          icon: "🦎",
+          label: "Chameleon Camouflage",
+        },
+        {
+          query: "Do trees communicate?",
+          icon: "🌳",
+          label: "How Forests Talk",
+        },
+        { query: "What is an API?", icon: "⚙️", label: "Understanding APIs" },
+        {
+          query: "Explain machine learning",
+          icon: "🤖",
+          label: "Basics of AI",
+        },
+        {
+          query: "How does Wi-Fi work?",
+          icon: "📶",
+          label: "The Invisible Web",
+        },
+        {
+          query: "What is a blockchain?",
+          icon: "⛓️",
+          label: "Blockchain Explained",
+        },
+        {
+          query: "How do CPUs work?",
+          icon: "🖩",
+          label: "The Brain of a Computer",
+        },
+        {
+          query: "What is cloud computing?",
+          icon: "☁️",
+          label: "Living in the Cloud",
+        },
+        {
+          query: "Explain binary code",
+          icon: "0️⃣",
+          label: "Language of 1s and 0s",
+        },
+        {
+          query: "How do touchscreens work?",
+          icon: "📱",
+          label: "Touchscreen Tech",
+        },
+        {
+          query: "What is open source?",
+          icon: "🔓",
+          label: "Open Source Movement",
+        },
+        {
+          query: "Why do we dream?",
+          icon: "💭",
+          label: "The Purpose of Dreams",
+        },
+        { query: "How is glass made?", icon: "🪟", label: "Creation of Glass" },
+        {
+          query: "What makes popcorn pop?",
+          icon: "🍿",
+          label: "Science of Popcorn",
+        },
+        {
+          query: "Why is the sky blue?",
+          icon: "🌤️",
+          label: "Colors of the Atmosphere",
+        },
+        {
+          query: "How does soap clean?",
+          icon: "🧼",
+          label: "Chemistry of Cleaning",
+        },
+        {
+          query: "What causes rainbows?",
+          icon: "🌈",
+          label: "The Magic of Optics",
+        },
+        {
+          query: "How do mirrors work?",
+          icon: "🪞",
+          label: "Physics of Reflection",
+        },
+        { query: "Why do we yawn?", icon: "🥱", label: "Biology of Yawning" },
+        {
+          query: "How does a compass work?",
+          icon: "🧭",
+          label: "Navigating the Earth",
+        },
+        {
+          query: "How do submarines work?",
+          icon: "⛴️",
+          label: "Submarine Navigation",
+        },
+        {
+          query: "What is the speed of light?",
+          icon: "⚡",
+          label: "Speed of Light",
+        },
+        {
+          query: "Explain the Fermi Paradox",
+          icon: "👽",
+          label: "Fermi Paradox",
+        },
+        {
+          query: "How do solar panels work?",
+          icon: "☀️",
+          label: "Solar Energy",
+        },
+        {
+          query: "What are black holes made of?",
+          icon: "🌌",
+          label: "Inside Black Holes",
+        },
+        {
+          query: "How does GPS work?",
+          icon: "🛰️",
+          label: "Global Positioning System",
+        },
+        { query: "What is photosynthesis?", icon: "🌱", label: "Plant Energy" },
+        {
+          query: "How do fireflies glow?",
+          icon: "✨",
+          label: "Bioluminescence",
+        },
+        {
+          query: "Why do zebras have stripes?",
+          icon: "🦓",
+          label: "Zebra Stripes",
+        },
+        {
+          query: "History of the Olympic Games",
+          icon: "🏅",
+          label: "Olympic History",
+        },
+        {
+          query: "Who painted the Mona Lisa?",
+          icon: "🎨",
+          label: "Mona Lisa Secrets",
+        },
+        {
+          query: "What causes earthquakes?",
+          icon: "🌍",
+          label: "Earthquakes Explained",
+        },
+        { query: "How are tornadoes formed?", icon: "🌪️", label: "Tornadoes" },
+        {
+          query: "Explain the Fibonacci sequence",
+          icon: "🔢",
+          label: "Fibonacci Math",
+        },
+        {
+          query: "What is the Golden Ratio?",
+          icon: "📐",
+          label: "The Golden Ratio",
+        },
+        {
+          query: "How does the human eye work?",
+          icon: "👁️",
+          label: "Human Vision",
+        },
+        { query: "What are stem cells?", icon: "🧫", label: "Stem Cells" },
+        { query: "How do antibiotics work?", icon: "💊", label: "Antibiotics" },
+        {
+          query: "Explain the theory of evolution",
+          icon: "🐒",
+          label: "Theory of Evolution",
+        },
+        {
+          query: "What is the placebo effect?",
+          icon: "🧠",
+          label: "Placebo Effect",
+        },
+        {
+          query: "How do helicopters fly?",
+          icon: "🚁",
+          label: "Helicopter Flight",
+        },
+        {
+          query: "What makes a diamond so hard?",
+          icon: "💎",
+          label: "Diamond Structure",
+        },
+        { query: "How is paper made?", icon: "📄", label: "Paper Making" },
+        {
+          query: "Explain how batteries work",
+          icon: "🔋",
+          label: "Battery Chemistry",
+        },
+        {
+          query: "What is the Mariana Trench?",
+          icon: "🌊",
+          label: "Deepest Ocean",
+        },
+        {
+          query: "How do spiders spin webs?",
+          icon: "🕸️",
+          label: "Spider Webs",
+        },
+        { query: "Why is Mars red?", icon: "🔴", label: "The Red Planet" },
+        { query: "What are exoplanets?", icon: "🪐", label: "Exoplanets" },
+        {
+          query: "How does a microwave oven work?",
+          icon: "🍲",
+          label: "Microwaves",
+        },
+        { query: "What is the ozone layer?", icon: "🛡️", label: "Ozone Layer" },
+        {
+          query: "How do penguins survive the cold?",
+          icon: "🐧",
+          label: "Penguin Survival",
+        },
+        {
+          query: "Why do we get goosebumps?",
+          icon: "🥶",
+          label: "Goosebumps Explained",
+        },
+        {
+          query: "What causes the Northern Lights?",
+          icon: "🌌",
+          label: "Auroras",
+        },
+        {
+          query: "How do trains stay on tracks?",
+          icon: "🚂",
+          label: "Train Physics",
+        },
+        {
+          query: "What is the difference between a virus and bacteria?",
+          icon: "🦠",
+          label: "Virus vs Bacteria",
+        },
+        { query: "How do muscles grow?", icon: "💪", label: "Muscle Growth" },
+        { query: "Explain the water cycle", icon: "💧", label: "Water Cycle" },
+        {
+          query: "What are tectonic plates?",
+          icon: "🗺️",
+          label: "Tectonic Plates",
+        },
+        { query: "How does anesthesia work?", icon: "🛏️", label: "Anesthesia" },
+        {
+          query: "What is the history of tea?",
+          icon: "🍵",
+          label: "History of Tea",
+        },
+        {
+          query: "How did the dinosaurs go extinct?",
+          icon: "☄️",
+          label: "Dinosaur Extinction",
+        },
+        { query: "What are coral reefs?", icon: "🪸", label: "Coral Reefs" },
+        {
+          query: "How do memory foams work?",
+          icon: "🛏️",
+          label: "Memory Foam",
+        },
+        { query: "What is antimatter?", icon: "⚛️", label: "Antimatter" },
+        {
+          query: "How do rockets steer in space?",
+          icon: "🚀",
+          label: "Rocket Navigation",
+        },
+        {
+          query: "Explain the concept of infinity",
+          icon: "♾️",
+          label: "Infinity Concept",
+        },
+        { query: "What is absolute zero?", icon: "🌡️", label: "Absolute Zero" },
+        {
+          query: "How do musical instruments make sound?",
+          icon: "🎸",
+          label: "Acoustics",
+        },
+        { query: "What causes a tsunami?", icon: "🌊", label: "Tsunamis" },
+        {
+          query: "Why do some people have blue eyes?",
+          icon: "👁️",
+          label: "Eye Color Genetics",
+        },
       ];
 
       function loadRandomSuggestions() {
+        // CHANGED: Now pulls exactly 6 items from the expanded 100-item array!
         const shuffled = allSuggestions
           .sort(() => 0.5 - Math.random())
-          .slice(0, 3);
+          .slice(0, 6);
         suggestionsBox.innerHTML = "";
         shuffled.forEach((item) => {
           const btn = document.createElement("button");
@@ -1178,7 +1590,6 @@
         chatBox.scrollTop = chatBox.scrollHeight;
       }
 
-      // --- HELPER FUNCTIONS FOR LOADING ---
       function showLoadingMessage() {
         const loadingId = "loading-" + Date.now();
         const loadingDiv = document.createElement("div");
@@ -1200,42 +1611,31 @@
         sendMessage();
       }
 
-      // --- NEW: API QUIZ LOGIC ---
       async function startQuiz() {
-        useSuggestion("Start a quiz"); // Sends the message to screen
+        useSuggestion("Start a quiz");
         const loadingId = showLoadingMessage();
-
         try {
-          // OpenTDB Free API
           const response = await fetch(
             "https://opentdb.com/api.php?amount=1&type=multiple",
           );
           const data = await response.json();
           removeLoadingMessage(loadingId);
-
           if (data.results && data.results.length > 0) {
             const quiz = data.results[0];
             chatMode = "quiz";
-
-            // Decode HTML entities like &quot;
             const decodeHTML = (html) => {
               const txt = document.createElement("textarea");
               txt.innerHTML = html;
               return txt.value;
             };
-
             currentChallengeAnswer = decodeHTML(quiz.correct_answer);
-
-            // Mix the answers
             let options = [...quiz.incorrect_answers, quiz.correct_answer];
             options.sort(() => Math.random() - 0.5);
-
             let messageText = `**Trivia Time!** (${quiz.category})\n\n*${decodeHTML(quiz.question)}*\n\n`;
             options.forEach((opt, index) => {
               messageText += `${index + 1}. ${decodeHTML(opt)}\n`;
             });
             messageText += `\n*(Type your guess below)*`;
-
             appendMessage("bot", messageText);
           }
         } catch (error) {
@@ -1247,17 +1647,13 @@
         }
       }
 
-      // --- NEW: API RIDDLE LOGIC ---
       async function startRiddle() {
         useSuggestion("Give me a random riddle");
         const loadingId = showLoadingMessage();
-
         try {
-          // Free Riddle API
           const response = await fetch("https://riddles-api.vercel.app/random");
           const data = await response.json();
           removeLoadingMessage(loadingId);
-
           if (data.riddle && data.answer) {
             chatMode = "riddle";
             currentChallengeAnswer = data.answer;
@@ -1268,7 +1664,6 @@
           }
         } catch (error) {
           removeLoadingMessage(loadingId);
-          // Fallback if API fails
           chatMode = "riddle";
           currentChallengeAnswer = "A map";
           appendMessage(
@@ -1278,7 +1673,6 @@
         }
       }
 
-      // --- NEW: GLOBAL REVEAL LOGIC ---
       function handleGlobalReveal() {
         if (chatMode === "quiz" || chatMode === "riddle") {
           appendMessage("user", "I give up, please give me the answer.");
@@ -1286,17 +1680,15 @@
             "bot",
             `No problem! The correct answer was: **${currentChallengeAnswer}**\n\nLet's keep chatting or try another one!`,
           );
-          chatMode = "normal"; // Reset back to normal chatting
+          chatMode = "normal";
           currentChallengeAnswer = "";
         } else {
           useSuggestion("I give up, please give me the answer.");
         }
       }
 
-      // --- MODIFIED SEND MESSAGE LOGIC ---
       async function sendMessage() {
         const message = userInput.value.trim();
-        // Prevent infinite loop if called by startQuiz() or startRiddle()
         if (!message) return;
 
         if (isFirstMessage) {
@@ -1304,7 +1696,6 @@
           isFirstMessage = false;
         }
 
-        // If it's a programmatic trigger for the UI, just display and return early to prevent double processing
         if (
           message === "Start a quiz" ||
           message === "Give me a random riddle"
@@ -1317,7 +1708,6 @@
         appendMessage("user", message);
         userInput.value = "";
 
-        // CHECK IF WE ARE IN GAME MODE
         if (chatMode === "quiz" || chatMode === "riddle") {
           const guess = message.toLowerCase();
           const answer = currentChallengeAnswer.toLowerCase();
@@ -1340,7 +1730,7 @@
               `🎉 **Correct!** The answer is **${currentChallengeAnswer}**.`,
             );
             incrementSolved();
-            chatMode = "normal"; // Return to chat
+            chatMode = "normal";
           } else {
             appendMessage(
               "bot",
@@ -1350,7 +1740,6 @@
           return;
         }
 
-        // NORMAL CHAT FALLBACK
         const loadingId = showLoadingMessage();
         try {
           const response = await fetch("/get_response", {
@@ -1370,7 +1759,6 @@
       function handleKeyPress(event) {
         if (event.key === "Enter") sendMessage();
       }
-
       function toggleAbout() {
         document.getElementById("about-overlay").classList.toggle("active");
       }
@@ -1380,8 +1768,6 @@
         if (overlay.classList.contains("active")) openGame("menu");
       }
 
-      // --- GAME CODE BELOW REMAINS EXACTLY THE SAME ---
-      // Keeping all the original Scramble, Math, Color logic unmodified
       function openGame(gameType) {
         document.getElementById("game-menu-view").style.display = "none";
         document.getElementById("game-scramble-view").style.display = "none";
@@ -1402,7 +1788,296 @@
         }
       }
 
-      // [ ... The rest of your word scramble, math sprint, and color clash code stays here unchanged! ... ]
+      // -- Scramble Logic --
+      const backupDB = {
+        easy: [
+          {
+            word: "CODE",
+            hint: "🧠 What word means 'instructions given to a computer'?",
+          },
+          {
+            word: "DATA",
+            hint: "🧠 What word means 'facts and statistics collected together'?",
+          },
+        ],
+        medium: [
+          {
+            word: "PYTHON",
+            hint: "🧠 What word means 'a programming language or a snake'?",
+          },
+          {
+            word: "SERVER",
+            hint: "🧠 What word means 'a computer that provides data to others'?",
+          },
+        ],
+        hard: [
+          {
+            word: "ALGORITHM",
+            hint: "🧠 What word means 'a step-by-step mathematical procedure'?",
+          },
+          {
+            word: "NETWORK",
+            hint: "🧠 What word means 'a system of interconnected computers'?",
+          },
+        ],
+      };
+      let currentScrambleWord = "";
+      let currentScrambleDifficulty = "medium";
+      let isFetchingWord = false;
+
+      function setScrambleDifficulty(level) {
+        if (isFetchingWord) return;
+        currentScrambleDifficulty = level;
+        document
+          .querySelectorAll(".scramble-diff")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById(`scramble-${level}`).classList.add("active");
+        loadNewScramble();
+      }
+
+      async function loadNewScramble() {
+        if (isFetchingWord) return;
+        isFetchingWord = true;
+        const wordEl = document.getElementById("scrambled-word");
+        const inputEl = document.getElementById("scramble-input");
+        const hintEl = document.getElementById("scramble-hint");
+        inputEl.disabled = true;
+        wordEl.innerText = "FETCHING...";
+        wordEl.classList.add("loading-text");
+        hintEl.innerText = "Generating a new brain teaser...";
+        document.getElementById("scramble-message").innerText = "";
+
+        let wordLength =
+          currentScrambleDifficulty === "easy"
+            ? "length=5"
+            : currentScrambleDifficulty === "medium"
+              ? "length=7"
+              : "length=9";
+        let newWordObj = null;
+
+        for (let i = 0; i < 3; i++) {
+          try {
+            const wordRes = await fetch(
+              `https://random-word-api.herokuapp.com/word?${wordLength}`,
+            );
+            const wordData = await wordRes.json();
+            const fetchedWord = wordData[0];
+            const defRes = await fetch(
+              `https://api.dictionaryapi.dev/api/v2/entries/en/${fetchedWord}`,
+            );
+            if (!defRes.ok) continue;
+            const defData = await defRes.json();
+            let rawDef = defData[0].meanings[0].definitions[0].definition;
+            if (rawDef.endsWith(".")) rawDef = rawDef.slice(0, -1);
+            const safeRegex = new RegExp(
+              `\\b${fetchedWord.slice(0, -1)}\\w*\\b`,
+              "gi",
+            );
+            rawDef = rawDef.replace(safeRegex, "_____");
+            if (rawDef.length > 110) rawDef = rawDef.substring(0, 107) + "...";
+            newWordObj = {
+              word: fetchedWord.toUpperCase(),
+              hint: `🧠 Question: What word means "${rawDef.toLowerCase()}"?`,
+            };
+            break;
+          } catch (err) {
+            console.log("Retrying API fetch...");
+          }
+        }
+
+        if (!newWordObj) {
+          const list = backupDB[currentScrambleDifficulty];
+          newWordObj = list[Math.floor(Math.random() * list.length)];
+        }
+        currentScrambleWord = newWordObj.word;
+        let scrambled = currentScrambleWord
+          .split("")
+          .sort(() => 0.5 - Math.random())
+          .join("");
+        while (
+          scrambled === currentScrambleWord &&
+          currentScrambleWord.length > 3
+        ) {
+          scrambled = currentScrambleWord
+            .split("")
+            .sort(() => 0.5 - Math.random())
+            .join("");
+        }
+        wordEl.classList.remove("loading-text");
+        wordEl.innerText = scrambled;
+        hintEl.innerText = newWordObj.hint;
+        inputEl.disabled = false;
+        inputEl.value = "";
+        inputEl.focus();
+        isFetchingWord = false;
+      }
+
+      function revealScramble() {
+        if (isFetchingWord) return;
+        document.getElementById("scramble-message").innerText =
+          `The answer is: ${currentScrambleWord}`;
+        document.getElementById("scramble-message").style.color = "#94a3b8";
+        setTimeout(loadNewScramble, 1800);
+      }
+
+      function checkScrambleAnswer() {
+        if (isFetchingWord) return;
+        const input = document.getElementById("scramble-input");
+        const val = input.value.trim().toLowerCase();
+        if (
+          val === "give me the answer" ||
+          val === "answer" ||
+          val === "show answer"
+        ) {
+          revealScramble();
+          return;
+        }
+        if (val.toUpperCase() === currentScrambleWord) {
+          document.getElementById("scramble-message").innerText = "Correct! 🌟";
+          document.getElementById("scramble-message").style.color = "#38bdf8";
+          incrementSolved();
+          setTimeout(loadNewScramble, 1200);
+        } else {
+          document.getElementById("scramble-message").innerText =
+            "Try again! (Or click Reveal)";
+          document.getElementById("scramble-message").style.color = "#f43f5e";
+          input.value = "";
+        }
+      }
+      function handleScrambleKeyPress(event) {
+        if (event.key === "Enter") checkScrambleAnswer();
+      }
+
+      // -- Math Logic --
+      let currentMathAnswer = 0;
+      let currentMathDifficulty = "medium";
+      let lastMathEquation = "";
+      function setMathDifficulty(level) {
+        currentMathDifficulty = level;
+        document
+          .querySelectorAll(".math-diff")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById(`math-${level}`).classList.add("active");
+        loadNewMath();
+      }
+      function loadNewMath() {
+        let op, num1, num2, equation;
+        do {
+          const operations =
+            currentMathDifficulty === "easy" ? ["+", "-"] : ["+", "-", "*"];
+          op = operations[Math.floor(Math.random() * operations.length)];
+          if (currentMathDifficulty === "easy") {
+            if (op === "+") {
+              num1 = Math.floor(Math.random() * 15) + 1;
+              num2 = Math.floor(Math.random() * 15) + 1;
+              currentMathAnswer = num1 + num2;
+            } else {
+              num1 = Math.floor(Math.random() * 20) + 5;
+              num2 = Math.floor(Math.random() * num1);
+              currentMathAnswer = num1 - num2;
+            }
+          } else if (currentMathDifficulty === "medium") {
+            if (op === "*") {
+              num1 = Math.floor(Math.random() * 8) + 2;
+              num2 = Math.floor(Math.random() * 8) + 2;
+              currentMathAnswer = num1 * num2;
+            } else if (op === "+") {
+              num1 = Math.floor(Math.random() * 50) + 10;
+              num2 = Math.floor(Math.random() * 50) + 10;
+              currentMathAnswer = num1 + num2;
+            } else {
+              num1 = Math.floor(Math.random() * 80) + 20;
+              num2 = Math.floor(Math.random() * num1);
+              currentMathAnswer = num1 - num2;
+            }
+          } else {
+            if (op === "*") {
+              num1 = Math.floor(Math.random() * 15) + 5;
+              num2 = Math.floor(Math.random() * 10) + 5;
+              currentMathAnswer = num1 * num2;
+            } else if (op === "+") {
+              num1 = Math.floor(Math.random() * 400) + 100;
+              num2 = Math.floor(Math.random() * 400) + 100;
+              currentMathAnswer = num1 + num2;
+            } else {
+              num1 = Math.floor(Math.random() * 500) + 100;
+              num2 = Math.floor(Math.random() * num1);
+              currentMathAnswer = num1 - num2;
+            }
+          }
+          equation = `${num1} ${op} ${num2}`;
+        } while (equation === lastMathEquation);
+        lastMathEquation = equation;
+        document.getElementById("math-equation").innerText = equation;
+        document.getElementById("math-input").value = "";
+        document.getElementById("math-message").innerText = "";
+        document.getElementById("math-input").focus();
+      }
+      function revealMath() {
+        document.getElementById("math-message").innerText =
+          `The answer is: ${currentMathAnswer}`;
+        document.getElementById("math-message").style.color = "#94a3b8";
+        setTimeout(loadNewMath, 1500);
+      }
+      function checkMathAnswer() {
+        const input = document.getElementById("math-input");
+        if (parseInt(input.value.trim()) === currentMathAnswer) {
+          document.getElementById("math-message").innerText =
+            "Lightning Fast! ⚡";
+          document.getElementById("math-message").style.color = "#38bdf8";
+          incrementSolved();
+          setTimeout(loadNewMath, 800);
+        } else {
+          document.getElementById("math-message").innerText =
+            "Not quite! (Or click Reveal)";
+          document.getElementById("math-message").style.color = "#f43f5e";
+          input.value = "";
+        }
+      }
+      function handleMathKeyPress(event) {
+        if (event.key === "Enter") checkMathAnswer();
+      }
+
+      // -- Color Logic --
+      const colorData = [
+        { name: "RED", hex: "#f43f5e" },
+        { name: "BLUE", hex: "#38bdf8" },
+        { name: "GREEN", hex: "#10b981" },
+        { name: "YELLOW", hex: "#f59e0b" },
+      ];
+      let isColorMatch = false;
+      let lastColorCombo = "";
+      function loadNewColor() {
+        let wordObj, paintObj, comboStr;
+        do {
+          isColorMatch = Math.random() > 0.5;
+          wordObj = colorData[Math.floor(Math.random() * colorData.length)];
+          if (isColorMatch) paintObj = wordObj;
+          else {
+            let options = colorData.filter((c) => c.name !== wordObj.name);
+            paintObj = options[Math.floor(Math.random() * options.length)];
+          }
+          comboStr = `${wordObj.name}-${paintObj.hex}`;
+        } while (comboStr === lastColorCombo);
+        lastColorCombo = comboStr;
+        const displayEl = document.getElementById("color-word");
+        displayEl.innerText = wordObj.name;
+        displayEl.style.color = paintObj.hex;
+        document.getElementById("color-message").innerText = "";
+      }
+      function checkColorAnswer(userGuessedMatch) {
+        if (userGuessedMatch === isColorMatch) {
+          document.getElementById("color-message").innerText = "Sharp mind! 🧠";
+          document.getElementById("color-message").style.color = "#38bdf8";
+          incrementSolved();
+          setTimeout(loadNewColor, 600);
+        } else {
+          document.getElementById("color-message").innerText =
+            "Oops, brain trick! 😵";
+          document.getElementById("color-message").style.color = "#f43f5e";
+          setTimeout(loadNewColor, 1000);
+        }
+      }
 
       window.onload = () => {
         checkDailyStreak();
