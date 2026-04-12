@@ -242,6 +242,7 @@
         padding-right: 15px;
         z-index: 100;
       }
+
       .bottom-area-row {
         display: flex;
         width: 100%;
@@ -284,6 +285,11 @@
         outline: none;
         width: 100%;
       }
+      input[type="number"]::-webkit-inner-spin-button,
+      input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
 
       .send-btn {
         background: #ffffff;
@@ -306,6 +312,9 @@
         color: white;
         box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
         transform: scale(1.05);
+      }
+      .send-btn:active {
+        transform: scale(0.95);
       }
       .send-text {
         display: inline;
@@ -335,15 +344,17 @@
         transform: translateY(-2px);
         box-shadow: 0 10px 25px rgba(244, 63, 94, 0.2);
       }
+      .outside-reveal-btn:active {
+        transform: scale(0.95);
+      }
 
-      /* ACTION BAR - FIXED CENTERING FOR ALL SCREENS */
       .action-bar {
         display: flex;
         gap: 15px;
         margin-top: 15px;
+        flex-wrap: wrap;
         justify-content: center;
         width: 100%;
-        max-width: 100%;
       }
       .action-btn {
         background: rgba(255, 255, 255, 0.03);
@@ -355,8 +366,6 @@
         transition: all 0.3s ease;
         font-weight: 500;
         font-size: 1em;
-        white-space: nowrap;
-        flex-shrink: 0;
       }
       .action-btn:hover {
         background: rgba(255, 255, 255, 0.08);
@@ -410,11 +419,13 @@
         pointer-events: none;
         transition: 0.4s ease-in-out;
         overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
       }
       .game-overlay.active {
         opacity: 1;
         pointer-events: all;
       }
+
       .close-game-btn {
         position: absolute;
         top: 30px;
@@ -429,8 +440,205 @@
         z-index: 1001;
       }
 
-      /* --- RESPONSIVE MEDIA QUERIES --- */
+      @keyframes loadingPulse {
+        0% {
+          opacity: 0.4;
+          transform: scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1.02);
+        }
+      }
+
+      .game-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding: 40px 20px;
+        text-align: center;
+        width: 100%;
+        max-width: 750px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: auto;
+      }
+
+      .view-container {
+        width: 100%;
+      }
+      .game-title {
+        margin-bottom: 30px;
+        font-size: 3.8em;
+        letter-spacing: -2px;
+      }
+
+      .back-btn {
+        background: none;
+        border: none;
+        color: #94a3b8;
+        font-size: 1.1em;
+        cursor: pointer;
+        display: block;
+        margin: 0 auto 20px auto;
+        transition: color 0.2s;
+        font-weight: 500;
+      }
+      .back-btn:hover {
+        color: #fff;
+      }
+
+      .game-input-box {
+        width: 100%;
+        max-width: 400px;
+        height: 70px;
+        display: block;
+        margin: 0 auto 25px auto;
+        padding: 10px 20px;
+        border-radius: 15px;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(10px);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        text-align: center;
+        font-size: 1.5em;
+        outline: none;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s;
+      }
+      .game-input-box:focus {
+        border-color: #38bdf8;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+      }
+      .game-input-box:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .hint-text {
+        color: #cbd5e1;
+        font-size: 1.2em;
+        font-style: italic;
+        margin-top: -10px;
+        margin-bottom: 25px;
+        line-height: 1.5;
+        background: rgba(15, 23, 42, 0.5);
+        padding: 15px;
+        border-radius: 12px;
+        border-left: 4px solid #38bdf8;
+        text-align: left;
+      }
+      .loading-text {
+        animation: loadingPulse 1s infinite alternate;
+        color: #94a3b8 !important;
+      }
+
+      .diff-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+      }
+      .diff-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        color: #e3e3e3;
+        padding: 8px 20px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 500;
+        transition: 0.2s;
+      }
+      .diff-btn.active {
+        background: #38bdf8;
+        color: #020617;
+        border-color: #38bdf8;
+        font-weight: bold;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 12px;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+      }
+      .reveal-btn {
+        background: rgba(255, 255, 255, 0.05);
+        color: #e3e3e3;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        border-radius: 40px;
+        padding: 0 25px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s;
+        height: 48px;
+      }
+      .reveal-btn:hover {
+        background: rgba(244, 63, 94, 0.1);
+        border-color: #f43f5e;
+        color: #f43f5e;
+      }
+
+      .modal-card {
+        background: rgba(15, 23, 42, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        padding: 40px;
+        border-radius: 30px;
+        text-align: center;
+        width: 90%;
+        max-width: 400px;
+        backdrop-filter: blur(20px);
+      }
+
+      /* Dynamic Game Texts */
+      #scrambled-word {
+        font-size: 4em;
+        color: #38bdf8;
+        margin: 20px 0;
+        font-weight: bold;
+        letter-spacing: 6px;
+        word-break: break-all;
+        line-height: 1.1;
+      }
+      #math-equation {
+        font-size: 5.5em;
+        color: #818cf8;
+        margin: 30px 0 40px 0;
+        font-weight: bold;
+      }
+      #color-word {
+        font-size: 6em;
+        margin: 40px 0;
+        font-weight: bold;
+      }
+
+      /* =========================================
+           📱 RESPONSIVE MEDIA QUERIES (MOBILE/TABLET)
+           ========================================= */
       @media (max-width: 768px) {
+        .stats-dashboard {
+          top: 10px;
+          left: 10px;
+          gap: 6px;
+          max-width: 65%;
+        }
+        .stat-item {
+          padding: 6px 10px;
+          font-size: 0.75em;
+        }
+        .top-right-about {
+          top: 10px;
+          right: 10px;
+          padding: 6px 10px;
+          font-size: 0.75em;
+        }
+
         .chat-box {
           margin-top: 60px;
           padding: 10px 15px;
@@ -441,6 +649,31 @@
         }
         .sub-greeting {
           font-size: 1.1em;
+          margin-top: 5px;
+        }
+        .message {
+          font-size: 1.1em;
+          max-width: 90%;
+        }
+        .suggestions-container {
+          padding: 10px 0;
+          gap: 8px;
+        }
+        .suggestion-chip {
+          padding: 10px 15px;
+          font-size: 0.85em;
+        }
+
+        .bottom-section {
+          padding-bottom: 15px;
+        }
+        .input-wrapper {
+          padding: 5px 5px 5px 15px;
+          height: 55px;
+          gap: 10px;
+        }
+        input[type="text"] {
+          font-size: 1.1em;
         }
 
         .input-wrapper .send-btn {
@@ -450,48 +683,91 @@
           height: 44px !important;
           padding: 0 !important;
           border-radius: 50% !important;
+          flex-shrink: 0;
         }
         .send-text {
           display: none;
         }
+        .input-wrapper .send-btn span:last-child {
+          font-size: 1.5em !important;
+          margin-top: -2px;
+          margin-left: 0;
+        }
+
         .outside-reveal-btn {
-          height: 50px;
+          height: 55px;
           padding: 0 15px;
           font-size: 0.95em;
         }
 
-        /* Center on mobile, scroll only if buttons exceed width */
         .action-bar {
           flex-wrap: nowrap;
           overflow-x: auto;
-          justify-content: flex-start; /* Required for scrolling */
-          padding-left: 15px; /* Add some padding so buttons don't hit edge when scrolling */
-          padding-right: 15px;
+          justify-content: flex-start;
+          width: 100%;
+          padding-bottom: 5px;
           scrollbar-width: none;
           -webkit-overflow-scrolling: touch;
+          gap: 8px;
         }
-
-        /* If items are fewer, this ensures they look centered on mobile */
-        .action-bar::before,
-        .action-bar::after {
-          content: "";
-          margin: auto;
-        }
-
         .action-bar::-webkit-scrollbar {
           display: none;
+        }
+        .action-btn {
+          white-space: nowrap;
+          flex-shrink: 0;
+          padding: 8px 16px;
+          font-size: 0.9em;
+        }
+
+        .close-game-btn {
+          top: 10px;
+          right: 15px;
+          font-size: 40px;
+        }
+        .game-card {
+          padding: 20px 10px;
+        }
+        .game-title {
+          font-size: 2.4em !important;
+          margin-bottom: 20px;
+        }
+
+        #scrambled-word {
+          font-size: 2.5em;
+          letter-spacing: 2px;
+        }
+        #math-equation {
+          font-size: 3.5em;
+          margin: 20px 0;
+        }
+        #color-word {
+          font-size: 4em;
+          margin: 20px 0;
+        }
+
+        .game-input-box {
+          height: 55px;
+          font-size: 1.2em;
+          padding: 10px;
+        }
+        .hint-text {
+          font-size: 1em;
         }
 
         .btn-row {
           flex-direction: column;
           gap: 10px;
-          width: 100%;
         }
         .btn-row .reveal-btn,
         .btn-row .send-btn {
           width: 100%;
           height: 50px;
+          font-size: 1.1em !important;
           border-radius: 25px;
+        }
+        .modal-card {
+          padding: 25px;
         }
       }
     </style>
@@ -531,6 +807,7 @@
               <span style="font-size: 1.2em">↑</span>
             </button>
           </div>
+
           <button
             class="outside-reveal-btn"
             onclick="useSuggestion('I give up, please give me the answer.')"
@@ -539,6 +816,7 @@
             👀 Reveal
           </button>
         </div>
+
         <div class="action-bar">
           <button class="action-btn" onclick="toggleGame()">
             🧠 Brain Training
@@ -557,11 +835,10 @@
 
       <div class="game-overlay" id="game-overlay">
         <button class="close-game-btn" onclick="toggleGame()">&times;</button>
+
         <div class="game-card">
           <div id="game-menu-view" class="view-container">
-            <h1 class="gradient-text game-title" style="font-size: 3.5em">
-              Select Training
-            </h1>
+            <h1 class="gradient-text game-title">Select Training</h1>
             <button
               class="action-btn"
               style="
@@ -569,6 +846,7 @@
                 max-width: 400px;
                 padding: 15px;
                 margin-bottom: 15px;
+                font-size: 1.1em;
               "
               onclick="openGame('scramble')"
             >
@@ -581,6 +859,7 @@
                 max-width: 400px;
                 padding: 15px;
                 margin-bottom: 15px;
+                font-size: 1.1em;
               "
               onclick="openGame('math')"
             >
@@ -588,7 +867,12 @@
             ><br />
             <button
               class="action-btn"
-              style="width: 100%; max-width: 400px; padding: 15px"
+              style="
+                width: 100%;
+                max-width: 400px;
+                padding: 15px;
+                font-size: 1.1em;
+              "
               onclick="openGame('color')"
             >
               🎨 Color Clash
@@ -604,6 +888,7 @@
               ← Back to Menu
             </button>
             <h1 class="gradient-text game-title">Word Scramble</h1>
+
             <div class="diff-container">
               <button
                 class="diff-btn scramble-diff"
@@ -627,28 +912,11 @@
                 Hard
               </button>
             </div>
-            <div
-              id="scrambled-word"
-              style="
-                font-size: 3.5em;
-                color: #38bdf8;
-                margin: 20px 0;
-                font-weight: bold;
-                word-break: break-all;
-              "
-            ></div>
-            <div
-              id="scramble-hint"
-              class="hint-text"
-              style="
-                background: rgba(15, 23, 42, 0.5);
-                padding: 15px;
-                border-radius: 12px;
-                border-left: 4px solid #38bdf8;
-                text-align: left;
-                margin-bottom: 20px;
-              "
-            ></div>
+
+            <div id="scrambled-word"></div>
+
+            <div id="scramble-hint" class="hint-text"></div>
+
             <input
               type="text"
               id="scramble-input"
@@ -659,15 +927,26 @@
             />
             <div
               id="scramble-message"
-              style="margin-bottom: 20px; font-weight: bold"
+              style="
+                margin-bottom: 20px;
+                font-weight: bold;
+                font-size: 1.2em;
+                min-height: 25px;
+              "
             ></div>
+
             <div class="btn-row">
-              <button class="reveal-btn" onclick="revealScramble()">
+              <button
+                class="reveal-btn"
+                id="scramble-reveal-btn"
+                onclick="revealScramble()"
+              >
                 Reveal
               </button>
               <button
                 class="send-btn"
-                style="flex-grow: 1"
+                id="scramble-check-btn"
+                style="flex-grow: 1; justify-content: center; font-size: 1.2em"
                 onclick="checkScrambleAnswer()"
               >
                 Check
@@ -680,6 +959,7 @@
               ← Back to Menu
             </button>
             <h1 class="gradient-text game-title">Math Sprint</h1>
+
             <div class="diff-container">
               <button
                 class="diff-btn math-diff"
@@ -703,15 +983,9 @@
                 Hard
               </button>
             </div>
-            <div
-              id="math-equation"
-              style="
-                font-size: 4em;
-                color: #818cf8;
-                margin: 30px 0;
-                font-weight: bold;
-              "
-            ></div>
+
+            <div id="math-equation"></div>
+
             <input
               type="number"
               id="math-input"
@@ -722,13 +996,19 @@
             />
             <div
               id="math-message"
-              style="margin-bottom: 20px; font-weight: bold"
+              style="
+                margin-bottom: 20px;
+                font-weight: bold;
+                font-size: 1.2em;
+                min-height: 25px;
+              "
             ></div>
+
             <div class="btn-row">
               <button class="reveal-btn" onclick="revealMath()">Reveal</button>
               <button
                 class="send-btn"
-                style="flex-grow: 1"
+                style="flex-grow: 1; justify-content: center; font-size: 1.2em"
                 onclick="checkMathAnswer()"
               >
                 Submit
@@ -745,40 +1025,50 @@
               ← Back to Menu
             </button>
             <h1 class="gradient-text game-title">Color Clash</h1>
-            <div
-              id="color-word"
-              style="font-size: 5em; margin: 40px 0; font-weight: bold"
-            >
-              RED
-            </div>
+            <p style="color: #cbd5e1; font-size: 1.1em">
+              Does the text match its color?
+            </p>
+
+            <div id="color-word">RED</div>
+
             <div
               id="color-message"
-              style="margin-bottom: 20px; font-weight: bold"
+              style="
+                margin-bottom: 20px;
+                font-weight: bold;
+                font-size: 1.2em;
+                min-height: 25px;
+              "
             ></div>
+
             <div class="btn-row">
               <button
                 class="send-btn"
                 style="
                   flex-grow: 1;
+                  justify-content: center;
+                  background: transparent;
                   border: 1px solid #f43f5e;
                   color: #f43f5e;
-                  background: transparent;
+                  font-size: 1.2em;
                 "
                 onclick="checkColorAnswer(false)"
               >
-                No
+                No (Mismatch)
               </button>
               <button
                 class="send-btn"
                 style="
                   flex-grow: 1;
+                  justify-content: center;
+                  background: transparent;
                   border: 1px solid #38bdf8;
                   color: #38bdf8;
-                  background: transparent;
+                  font-size: 1.2em;
                 "
                 onclick="checkColorAnswer(true)"
               >
-                Yes
+                Yes (Match)
               </button>
             </div>
           </div>
@@ -794,11 +1084,15 @@
         <div class="modal-card">
           <h2 style="margin-bottom: 15px; color: #38bdf8">About Think First</h2>
           <p style="line-height: 1.6; color: #cbd5e1; margin-bottom: 20px">
-            A project to sharpen your mind.
+            A hobby project built to challenge your curiosity and sharpen your
+            mind.
           </p>
-          <p style="font-size: 0.9em; color: #94a3b8">Developed by:</p>
+          <p style="font-size: 0.9em; color: #94a3b8; margin-bottom: 10px">
+            Developed by:
+          </p>
           <h3 style="color: #fff">Prashant Singh Suriya</h3>
-          <h3 style="color: #fff">Nitish Tomar</h3>
+          <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
+          <p style="font-size: 0.8em; color: #38bdf8">v15.0 • Streamlined UI</p>
         </div>
       </div>
     </div>
@@ -811,20 +1105,348 @@
       let isFirstMessage = true;
 
       const motivationalLines = [
+        "Your brain called, it wants a challenge.",
         "Fuel your curiosity.",
+        "Learn something new today.",
+        "Train your mind to see the good in everything.",
         "Small steps every day.",
+        "Expand your horizons.",
+        "Challenge yourself, you'll be surprised.",
         "Knowledge is your superpower.",
+        "Stay curious, keep learning.",
+        "A workout for your intellect.",
+        "Push your limits today.",
+        "Every puzzle is a step forward.",
+        "Great things come from hard work.",
+        "Embrace the struggle of learning.",
+        "Your potential is limitless.",
         "Think outside the box.",
-        "Stay curious.",
+        "Mistakes are proof you are trying.",
+        "Focus on progress, not perfection.",
+        "A sharp mind is a powerful tool.",
+        "Challenge your assumptions.",
+        "Curiosity is the engine of achievement.",
+        "Unlock your brain's hidden power.",
+        "Level up your intellect.",
+        "Keep your mind active and engaged.",
+        "The brain is a muscle—exercise it!",
       ];
 
       function setRandomGreeting() {
         const greetingEl = document.getElementById("sub-greeting");
-        if (greetingEl)
-          greetingEl.innerText =
-            motivationalLines[
-              Math.floor(Math.random() * motivationalLines.length)
-            ];
+        const randomLine =
+          motivationalLines[
+            Math.floor(Math.random() * motivationalLines.length)
+          ];
+        greetingEl.innerText = randomLine;
+      }
+
+      let solvedCount = parseInt(localStorage.getItem("solvedCount")) || 0;
+      let totalMinutes = parseInt(localStorage.getItem("totalMinutes")) || 0;
+      let streakCount = parseInt(localStorage.getItem("streakCount")) || 0;
+
+      function checkDailyStreak() {
+        const today = new Date().toDateString();
+        const lastLoginDate = localStorage.getItem("lastLoginDate");
+        if (lastLoginDate !== today) {
+          if (lastLoginDate) {
+            const diffDays = Math.ceil(
+              Math.abs(new Date(today) - new Date(lastLoginDate)) /
+                (1000 * 60 * 60 * 24),
+            );
+            if (diffDays === 1) streakCount++;
+            else if (diffDays > 1) streakCount = 1;
+          } else {
+            streakCount = 1;
+          }
+          localStorage.setItem("streakCount", streakCount);
+          localStorage.setItem("lastLoginDate", today);
+        }
+      }
+
+      function updateStatsDisplay() {
+        document.getElementById("riddle-count").innerText = solvedCount;
+        document.getElementById("time-spent").innerText = totalMinutes;
+        document.getElementById("streak-count").innerText = streakCount;
+      }
+
+      setInterval(() => {
+        totalMinutes++;
+        localStorage.setItem("totalMinutes", totalMinutes);
+        updateStatsDisplay();
+      }, 60000);
+      function incrementSolved() {
+        solvedCount++;
+        localStorage.setItem("solvedCount", solvedCount);
+        updateStatsDisplay();
+      }
+
+      const allSuggestions = [
+        {
+          query: "How do airplanes stay in the air?",
+          icon: "✈️",
+          label: "The Science of Flight",
+        },
+        {
+          query: "Explain quantum physics to a kid",
+          icon: "⚛️",
+          label: "Quantum Physics Simplified",
+        },
+        {
+          query: "Tell me a dinosaur fact",
+          icon: "🦖",
+          label: "Fascinating Dino Facts",
+        },
+        {
+          query: "Explain black holes",
+          icon: "🌌",
+          label: "Mysteries of Black Holes",
+        },
+        {
+          query: "How do magnets work?",
+          icon: "🧲",
+          label: "The Magic of Magnets",
+        },
+        {
+          query: "What is string theory?",
+          icon: "🧶",
+          label: "Unraveling String Theory",
+        },
+        {
+          query: "Why does ice float?",
+          icon: "🧊",
+          label: "The Physics of Ice",
+        },
+        {
+          query: "How do vaccines work?",
+          icon: "💉",
+          label: "How Immunity Works",
+        },
+        {
+          query: "Explain relativity simply",
+          icon: "⏱️",
+          label: "Einstein's Relativity",
+        },
+        {
+          query: "How do lasers work?",
+          icon: "🔦",
+          label: "The Power of Lasers",
+        },
+        { query: "What is DNA?", icon: "🧬", label: "The Secrets of DNA" },
+        {
+          query: "Why is the ocean salty?",
+          icon: "🌊",
+          label: "Why Oceans are Salty",
+        },
+        {
+          query: "How do volcanoes erupt?",
+          icon: "🌋",
+          label: "Inside a Volcano",
+        },
+        {
+          query: "What is dark matter?",
+          icon: "🌑",
+          label: "Hunting for Dark Matter",
+        },
+        {
+          query: "Who built the pyramids?",
+          icon: "🏜️",
+          label: "Building the Pyramids",
+        },
+        {
+          query: "Tell me about the Roman Empire",
+          icon: "🏛️",
+          label: "Rise of Rome",
+        },
+        {
+          query: "When was the printing press invented?",
+          icon: "📚",
+          label: "History of Printing",
+        },
+        {
+          query: "History of the internet",
+          icon: "🌐",
+          label: "Birth of the Internet",
+        },
+        {
+          query: "Who was Nikola Tesla?",
+          icon: "⚡",
+          label: "The Genius of Tesla",
+        },
+        { query: "What started WW1?", icon: "🌍", label: "The Spark of WW1" },
+        {
+          query: "Tell me a samurai fact",
+          icon: "⚔️",
+          label: "Legend of the Samurai",
+        },
+        {
+          query: "History of chocolate",
+          icon: "🍫",
+          label: "The Story of Chocolate",
+        },
+        {
+          query: "Who discovered electricity?",
+          icon: "💡",
+          label: "Discovering Electricity",
+        },
+        {
+          query: "How do bees make honey?",
+          icon: "🐝",
+          label: "How Bees Make Honey",
+        },
+        {
+          query: "Why do leaves change color?",
+          icon: "🍁",
+          label: "The Colors of Autumn",
+        },
+        {
+          query: "Tell me an octopus fact",
+          icon: "🐙",
+          label: "Amazing Octopus Facts",
+        },
+        {
+          query: "How deep is the ocean?",
+          icon: "⚓",
+          label: "Depths of the Ocean",
+        },
+        {
+          query: "How do bats fly in the dark?",
+          icon: "🦇",
+          label: "How Echolocation Works",
+        },
+        {
+          query: "Why do cats sleep so much?",
+          icon: "🐈",
+          label: "The Science of Cat Naps",
+        },
+        {
+          query: "What is the largest animal?",
+          icon: "🐋",
+          label: "Giants of the Sea",
+        },
+        {
+          query: "How do chameleons change color?",
+          icon: "🦎",
+          label: "Chameleon Camouflage",
+        },
+        {
+          query: "Do trees communicate?",
+          icon: "🌳",
+          label: "How Forests Talk",
+        },
+        { query: "What is an API?", icon: "⚙️", label: "Understanding APIs" },
+        {
+          query: "Explain machine learning",
+          icon: "🤖",
+          label: "Basics of AI",
+        },
+        {
+          query: "How does Wi-Fi work?",
+          icon: "📶",
+          label: "The Invisible Web",
+        },
+        {
+          query: "What is a blockchain?",
+          icon: "⛓️",
+          label: "Blockchain Explained",
+        },
+        {
+          query: "How do CPUs work?",
+          icon: "🖩",
+          label: "The Brain of a Computer",
+        },
+        {
+          query: "What is cloud computing?",
+          icon: "☁️",
+          label: "Living in the Cloud",
+        },
+        {
+          query: "Explain binary code",
+          icon: "0️⃣",
+          label: "The Language of 1s and 0s",
+        },
+        {
+          query: "How do touchscreens work?",
+          icon: "📱",
+          label: "Touchscreen Tech",
+        },
+        {
+          query: "What is open source?",
+          icon: "🔓",
+          label: "The Open Source Movement",
+        },
+        {
+          query: "Why do we dream?",
+          icon: "💭",
+          label: "The Purpose of Dreams",
+        },
+        {
+          query: "How is glass made?",
+          icon: "🪟",
+          label: "The Creation of Glass",
+        },
+        {
+          query: "What makes popcorn pop?",
+          icon: "🍿",
+          label: "The Science of Popcorn",
+        },
+        {
+          query: "Why is the sky blue?",
+          icon: "🌤️",
+          label: "Colors of the Atmosphere",
+        },
+        {
+          query: "How does soap clean?",
+          icon: "🧼",
+          label: "Chemistry of Cleaning",
+        },
+        {
+          query: "What causes rainbows?",
+          icon: "🌈",
+          label: "The Magic of Optics",
+        },
+        {
+          query: "How do mirrors work?",
+          icon: "🪞",
+          label: "Physics of Reflection",
+        },
+        {
+          query: "Why do we yawn?",
+          icon: "🥱",
+          label: "The Biology of Yawning",
+        },
+        {
+          query: "How does a compass work?",
+          icon: "🧭",
+          label: "Navigating the Earth",
+        },
+      ];
+
+      function loadRandomSuggestions() {
+        const shuffled = allSuggestions
+          .sort(() => 0.5 - Math.random())
+          .slice(0, 6);
+        suggestionsBox.innerHTML = "";
+        shuffled.forEach((item) => {
+          const btn = document.createElement("button");
+          btn.className = "suggestion-chip";
+          btn.onclick = () => useSuggestion(item.query);
+          btn.innerHTML = `${item.icon} ${item.label}`;
+          suggestionsBox.appendChild(btn);
+        });
+      }
+
+      function appendMessage(sender, text) {
+        const msgDiv = document.createElement("div");
+        msgDiv.className = `message ${sender}-message`;
+        msgDiv.innerHTML = sender === "bot" ? marked.parse(text) : text;
+        chatBox.appendChild(msgDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+
+      function useSuggestion(text) {
+        userInput.value = text;
+        sendMessage();
       }
 
       async function sendMessage() {
@@ -859,150 +1481,359 @@
         }
       }
 
-      function appendMessage(sender, text) {
-        const msgDiv = document.createElement("div");
-        msgDiv.className = `message ${sender}-message`;
-        msgDiv.innerHTML = sender === "bot" ? marked.parse(text) : text;
-        chatBox.appendChild(msgDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }
-
       function handleKeyPress(event) {
         if (event.key === "Enter") sendMessage();
       }
-      function useSuggestion(text) {
-        userInput.value = text;
-        sendMessage();
-      }
+
       function toggleAbout() {
         document.getElementById("about-overlay").classList.toggle("active");
       }
       function toggleGame() {
-        document.getElementById("game-overlay").classList.toggle("active");
-        if (
-          document.getElementById("game-overlay").classList.contains("active")
-        )
-          openGame("menu");
+        const overlay = document.getElementById("game-overlay");
+        overlay.classList.toggle("active");
+        if (overlay.classList.contains("active")) openGame("menu");
       }
 
       function openGame(gameType) {
-        document
-          .querySelectorAll(".view-container")
-          .forEach((v) => (v.style.display = "none"));
-        document.getElementById(`game-${gameType}-view`).style.display =
-          "block";
-        if (gameType === "scramble") loadNewScramble();
-        if (gameType === "math") loadNewMath();
-        if (gameType === "color") loadNewColor();
+        document.getElementById("game-menu-view").style.display = "none";
+        document.getElementById("game-scramble-view").style.display = "none";
+        document.getElementById("game-math-view").style.display = "none";
+        document.getElementById("game-color-view").style.display = "none";
+
+        if (gameType === "menu")
+          document.getElementById("game-menu-view").style.display = "block";
+        else if (gameType === "scramble") {
+          document.getElementById("game-scramble-view").style.display = "block";
+          loadNewScramble();
+        } else if (gameType === "math") {
+          document.getElementById("game-math-view").style.display = "block";
+          loadNewMath();
+        } else if (gameType === "color") {
+          document.getElementById("game-color-view").style.display = "block";
+          loadNewColor();
+        }
       }
 
-      // Word Scramble Logic
+      const backupDB = {
+        easy: [
+          {
+            word: "CODE",
+            hint: "🧠 Question: What word means 'instructions given to a computer'?",
+          },
+          {
+            word: "DATA",
+            hint: "🧠 Question: What word means 'facts and statistics collected together'?",
+          },
+        ],
+        medium: [
+          {
+            word: "PYTHON",
+            hint: "🧠 Question: What word means 'a programming language or a snake'?",
+          },
+          {
+            word: "SERVER",
+            hint: "🧠 Question: What word means 'a computer that provides data to others'?",
+          },
+        ],
+        hard: [
+          {
+            word: "ALGORITHM",
+            hint: "🧠 Question: What word means 'a step-by-step mathematical procedure'?",
+          },
+          {
+            word: "NETWORK",
+            hint: "🧠 Question: What word means 'a system of interconnected computers'?",
+          },
+        ],
+      };
+
       let currentScrambleWord = "";
+      let currentScrambleDifficulty = "medium";
+      let isFetchingWord = false;
+
+      function setScrambleDifficulty(level) {
+        if (isFetchingWord) return;
+        currentScrambleDifficulty = level;
+        document
+          .querySelectorAll(".scramble-diff")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById(`scramble-${level}`).classList.add("active");
+        loadNewScramble();
+      }
+
       async function loadNewScramble() {
+        if (isFetchingWord) return;
+        isFetchingWord = true;
+
         const wordEl = document.getElementById("scrambled-word");
+        const inputEl = document.getElementById("scramble-input");
         const hintEl = document.getElementById("scramble-hint");
+
+        inputEl.disabled = true;
         wordEl.innerText = "FETCHING...";
-        try {
-          const res = await fetch(
-            "https://random-word-api.herokuapp.com/word?length=6",
-          );
-          const data = await res.json();
-          currentScrambleWord = data[0].toUpperCase();
-          wordEl.innerText = currentScrambleWord
+        wordEl.classList.add("loading-text");
+        hintEl.innerText = "Generating a new brain teaser...";
+        document.getElementById("scramble-message").innerText = "";
+
+        let wordLength;
+        if (currentScrambleDifficulty === "easy") wordLength = "length=5";
+        else if (currentScrambleDifficulty === "medium")
+          wordLength = "length=7";
+        else wordLength = "length=9";
+
+        let newWordObj = null;
+
+        for (let i = 0; i < 3; i++) {
+          try {
+            const wordRes = await fetch(
+              `https://random-word-api.herokuapp.com/word?${wordLength}`,
+            );
+            const wordData = await wordRes.json();
+            const fetchedWord = wordData[0];
+
+            const defRes = await fetch(
+              `https://api.dictionaryapi.dev/api/v2/entries/en/${fetchedWord}`,
+            );
+            if (!defRes.ok) continue;
+
+            const defData = await defRes.json();
+            let rawDef = defData[0].meanings[0].definitions[0].definition;
+
+            if (rawDef.endsWith(".")) rawDef = rawDef.slice(0, -1);
+
+            const safeRegex = new RegExp(
+              `\\b${fetchedWord.slice(0, -1)}\\w*\\b`,
+              "gi",
+            );
+            rawDef = rawDef.replace(safeRegex, "_____");
+
+            if (rawDef.length > 110) {
+              rawDef = rawDef.substring(0, 107) + "...";
+            }
+
+            let hintText = `🧠 Question: What word means "${rawDef.toLowerCase()}"?`;
+
+            newWordObj = { word: fetchedWord.toUpperCase(), hint: hintText };
+            break;
+          } catch (err) {
+            console.log("Retrying API fetch...");
+          }
+        }
+
+        if (!newWordObj) {
+          const list = backupDB[currentScrambleDifficulty];
+          newWordObj = list[Math.floor(Math.random() * list.length)];
+        }
+
+        currentScrambleWord = newWordObj.word;
+
+        let scrambled = currentScrambleWord
+          .split("")
+          .sort(() => 0.5 - Math.random())
+          .join("");
+        while (
+          scrambled === currentScrambleWord &&
+          currentScrambleWord.length > 3
+        ) {
+          scrambled = currentScrambleWord
             .split("")
             .sort(() => 0.5 - Math.random())
             .join("");
-          hintEl.innerText = "Hint: Unscramble this 6-letter word!";
-        } catch {
-          wordEl.innerText = "ERROR";
         }
-      }
-      function revealScramble() {
-        document.getElementById("scramble-message").innerText =
-          "Answer: " + currentScrambleWord;
-        setTimeout(loadNewScramble, 2000);
-      }
-      function checkScrambleAnswer() {
-        const val = document
-          .getElementById("scramble-input")
-          .value.toUpperCase();
-        if (val === currentScrambleWord) {
-          document.getElementById("scramble-message").innerText = "Correct! 🎉";
-          incrementSolved();
-          setTimeout(loadNewScramble, 1000);
-        } else {
-          document.getElementById("scramble-message").innerText = "Try Again!";
-        }
-        document.getElementById("scramble-input").value = "";
-      }
-      function handleScrambleKeyPress(e) {
-        if (e.key === "Enter") checkScrambleAnswer();
+
+        wordEl.classList.remove("loading-text");
+        wordEl.innerText = scrambled;
+        hintEl.innerText = newWordObj.hint;
+
+        inputEl.disabled = false;
+        inputEl.value = "";
+        inputEl.focus();
+        isFetchingWord = false;
       }
 
-      // Math Logic
-      let currentMathAnswer = 0;
-      function loadNewMath() {
-        const n1 = Math.floor(Math.random() * 20);
-        const n2 = Math.floor(Math.random() * 20);
-        currentMathAnswer = n1 + n2;
-        document.getElementById("math-equation").innerText = `${n1} + ${n2}`;
+      function revealScramble() {
+        if (isFetchingWord) return;
+        document.getElementById("scramble-message").innerText =
+          `The answer is: ${currentScrambleWord}`;
+        document.getElementById("scramble-message").style.color = "#94a3b8";
+        setTimeout(loadNewScramble, 1800);
       }
+
+      function checkScrambleAnswer() {
+        if (isFetchingWord) return;
+        const input = document.getElementById("scramble-input");
+        const val = input.value.trim().toLowerCase();
+
+        if (
+          val === "give me the answer" ||
+          val === "answer" ||
+          val === "show answer"
+        ) {
+          revealScramble();
+          return;
+        }
+
+        if (val.toUpperCase() === currentScrambleWord) {
+          document.getElementById("scramble-message").innerText = "Correct! 🌟";
+          document.getElementById("scramble-message").style.color = "#38bdf8";
+          incrementSolved();
+          setTimeout(loadNewScramble, 1200);
+        } else {
+          document.getElementById("scramble-message").innerText =
+            "Try again! (Or click Reveal)";
+          document.getElementById("scramble-message").style.color = "#f43f5e";
+          input.value = "";
+        }
+      }
+      function handleScrambleKeyPress(event) {
+        if (event.key === "Enter") checkScrambleAnswer();
+      }
+
+      let currentMathAnswer = 0;
+      let currentMathDifficulty = "medium";
+      let lastMathEquation = "";
+
+      function setMathDifficulty(level) {
+        currentMathDifficulty = level;
+        document
+          .querySelectorAll(".math-diff")
+          .forEach((btn) => btn.classList.remove("active"));
+        document.getElementById(`math-${level}`).classList.add("active");
+        loadNewMath();
+      }
+
+      function loadNewMath() {
+        let op, num1, num2, equation;
+        do {
+          if (currentMathDifficulty === "easy") {
+            const operations = ["+", "-"];
+            op = operations[Math.floor(Math.random() * operations.length)];
+            if (op === "+") {
+              num1 = Math.floor(Math.random() * 15) + 1;
+              num2 = Math.floor(Math.random() * 15) + 1;
+              currentMathAnswer = num1 + num2;
+            } else {
+              num1 = Math.floor(Math.random() * 20) + 5;
+              num2 = Math.floor(Math.random() * num1);
+              currentMathAnswer = num1 - num2;
+            }
+          } else if (currentMathDifficulty === "medium") {
+            const operations = ["+", "-", "*"];
+            op = operations[Math.floor(Math.random() * operations.length)];
+            if (op === "*") {
+              num1 = Math.floor(Math.random() * 8) + 2;
+              num2 = Math.floor(Math.random() * 8) + 2;
+              currentMathAnswer = num1 * num2;
+            } else if (op === "+") {
+              num1 = Math.floor(Math.random() * 50) + 10;
+              num2 = Math.floor(Math.random() * 50) + 10;
+              currentMathAnswer = num1 + num2;
+            } else {
+              num1 = Math.floor(Math.random() * 80) + 20;
+              num2 = Math.floor(Math.random() * num1);
+              currentMathAnswer = num1 - num2;
+            }
+          } else {
+            const operations = ["+", "-", "*"];
+            op = operations[Math.floor(Math.random() * operations.length)];
+            if (op === "*") {
+              num1 = Math.floor(Math.random() * 15) + 5;
+              num2 = Math.floor(Math.random() * 10) + 5;
+              currentMathAnswer = num1 * num2;
+            } else if (op === "+") {
+              num1 = Math.floor(Math.random() * 400) + 100;
+              num2 = Math.floor(Math.random() * 400) + 100;
+              currentMathAnswer = num1 + num2;
+            } else {
+              num1 = Math.floor(Math.random() * 500) + 100;
+              num2 = Math.floor(Math.random() * num1);
+              currentMathAnswer = num1 - num2;
+            }
+          }
+          equation = `${num1} ${op} ${num2}`;
+        } while (equation === lastMathEquation);
+
+        lastMathEquation = equation;
+        document.getElementById("math-equation").innerText = equation;
+        document.getElementById("math-input").value = "";
+        document.getElementById("math-message").innerText = "";
+        document.getElementById("math-input").focus();
+      }
+
       function revealMath() {
         document.getElementById("math-message").innerText =
-          "Answer: " + currentMathAnswer;
-        setTimeout(loadNewMath, 2000);
+          `The answer is: ${currentMathAnswer}`;
+        document.getElementById("math-message").style.color = "#94a3b8";
+        setTimeout(loadNewMath, 1500);
       }
+
       function checkMathAnswer() {
-        const val = parseInt(document.getElementById("math-input").value);
-        if (val === currentMathAnswer) {
+        const input = document.getElementById("math-input");
+        if (parseInt(input.value.trim()) === currentMathAnswer) {
+          document.getElementById("math-message").innerText =
+            "Lightning Fast! ⚡";
+          document.getElementById("math-message").style.color = "#38bdf8";
           incrementSolved();
-          loadNewMath();
+          setTimeout(loadNewMath, 800);
+        } else {
+          document.getElementById("math-message").innerText =
+            "Not quite! (Or click Reveal)";
+          document.getElementById("math-message").style.color = "#f43f5e";
+          input.value = "";
         }
-        document.getElementById("math-input").value = "";
       }
-      function handleMathKeyPress(e) {
-        if (e.key === "Enter") checkMathAnswer();
+      function handleMathKeyPress(event) {
+        if (event.key === "Enter") checkMathAnswer();
       }
 
-      // Color Logic
+      const colorData = [
+        { name: "RED", hex: "#f43f5e" },
+        { name: "BLUE", hex: "#38bdf8" },
+        { name: "GREEN", hex: "#10b981" },
+        { name: "YELLOW", hex: "#f59e0b" },
+      ];
       let isColorMatch = false;
+      let lastColorCombo = "";
+
       function loadNewColor() {
-        const colors = ["#f43f5e", "#38bdf8", "#10b981", "#f59e0b"];
-        const names = ["RED", "BLUE", "GREEN", "YELLOW"];
-        const idx1 = Math.floor(Math.random() * 4);
-        const idx2 = Math.floor(Math.random() * 4);
-        isColorMatch = idx1 === idx2;
-        const el = document.getElementById("color-word");
-        el.innerText = names[idx1];
-        el.style.color = colors[idx2];
-      }
-      function checkColorAnswer(guess) {
-        if (guess === isColorMatch) incrementSolved();
-        loadNewColor();
+        let wordObj, paintObj, comboStr;
+        do {
+          isColorMatch = Math.random() > 0.5;
+          wordObj = colorData[Math.floor(Math.random() * colorData.length)];
+
+          if (isColorMatch) paintObj = wordObj;
+          else {
+            let options = colorData.filter((c) => c.name !== wordObj.name);
+            paintObj = options[Math.floor(Math.random() * options.length)];
+          }
+          comboStr = `${wordObj.name}-${paintObj.hex}`;
+        } while (comboStr === lastColorCombo);
+
+        lastColorCombo = comboStr;
+        const displayEl = document.getElementById("color-word");
+        displayEl.innerText = wordObj.name;
+        displayEl.style.color = paintObj.hex;
+        document.getElementById("color-message").innerText = "";
       }
 
-      // Stats
-      let solvedCount = parseInt(localStorage.getItem("solvedCount")) || 0;
-      let totalMinutes = parseInt(localStorage.getItem("totalMinutes")) || 0;
-      let streakCount = parseInt(localStorage.getItem("streakCount")) || 0;
-      function updateStatsDisplay() {
-        document.getElementById("riddle-count").innerText = solvedCount;
-        document.getElementById("time-spent").innerText = totalMinutes;
-        document.getElementById("streak-count").innerText = streakCount;
-      }
-      setInterval(() => {
-        totalMinutes++;
-        localStorage.setItem("totalMinutes", totalMinutes);
-        updateStatsDisplay();
-      }, 60000);
-      function incrementSolved() {
-        solvedCount++;
-        localStorage.setItem("solvedCount", solvedCount);
-        updateStatsDisplay();
+      function checkColorAnswer(userGuessedMatch) {
+        if (userGuessedMatch === isColorMatch) {
+          document.getElementById("color-message").innerText = "Sharp mind! 🧠";
+          document.getElementById("color-message").style.color = "#38bdf8";
+          incrementSolved();
+          setTimeout(loadNewColor, 600);
+        } else {
+          document.getElementById("color-message").innerText =
+            "Oops, brain trick! 😵";
+          document.getElementById("color-message").style.color = "#f43f5e";
+          setTimeout(loadNewColor, 1000);
+        }
       }
 
       window.onload = () => {
+        checkDailyStreak();
         setRandomGreeting();
+        loadRandomSuggestions();
         updateStatsDisplay();
       };
     </script>
