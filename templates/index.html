@@ -84,6 +84,8 @@
         gap: 10px;
         z-index: 10;
         width: max-content;
+        flex-wrap: wrap;
+        max-width: 70%;
       }
 
       .stat-item {
@@ -128,6 +130,8 @@
         padding-top: 15vh;
         text-align: center;
         transition: opacity 0.5s ease;
+        padding-left: 15px;
+        padding-right: 15px;
       }
       .gradient-text {
         font-size: 3.8em;
@@ -141,7 +145,7 @@
           #e3e3e3 80%
         );
         -webkit-background-clip: text;
-        background-clip: text; /* Added for VS Code Warning Fix */
+        background-clip: text;
         -webkit-text-fill-color: transparent;
       }
       .sub-greeting {
@@ -229,6 +233,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
       }
 
       .bottom-area-row {
@@ -271,6 +277,7 @@
         font-size: 1.2em;
         color: #e3e3e3;
         outline: none;
+        width: 100%;
       }
       input[type="number"]::-webkit-inner-spin-button,
       input[type="number"]::-webkit-outer-spin-button {
@@ -302,6 +309,9 @@
       }
       .send-btn:active {
         transform: scale(0.95);
+      }
+      .send-text {
+        display: inline;
       }
 
       .outside-reveal-btn {
@@ -400,10 +410,25 @@
         opacity: 0;
         pointer-events: none;
         transition: 0.4s ease-in-out;
+        overflow-y: auto;
       }
       .game-overlay.active {
         opacity: 1;
         pointer-events: all;
+      }
+
+      .close-game-btn {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 45px;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: 0.3s;
+        z-index: 1001;
       }
 
       @keyframes loadingPulse {
@@ -421,7 +446,7 @@
         background: transparent;
         border: none;
         box-shadow: none;
-        padding: 40px;
+        padding: 40px 20px;
         text-align: center;
         width: 100%;
         max-width: 750px;
@@ -429,10 +454,16 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin: auto;
       }
 
       .view-container {
         width: 100%;
+      }
+      .game-title {
+        margin-bottom: 30px;
+        font-size: 3.8em;
+        letter-spacing: -2px;
       }
 
       .back-btn {
@@ -442,7 +473,7 @@
         font-size: 1.1em;
         cursor: pointer;
         display: block;
-        margin: 0 auto 30px auto;
+        margin: 0 auto 20px auto;
         transition: color 0.2s;
         font-weight: 500;
       }
@@ -489,6 +520,7 @@
         padding: 15px;
         border-radius: 12px;
         border-left: 4px solid #38bdf8;
+        text-align: left;
       }
       .loading-text {
         animation: loadingPulse 1s infinite alternate;
@@ -500,6 +532,7 @@
         justify-content: center;
         gap: 10px;
         margin-bottom: 25px;
+        flex-wrap: wrap;
       }
       .diff-btn {
         background: rgba(255, 255, 255, 0.03);
@@ -535,6 +568,7 @@
         font-weight: bold;
         cursor: pointer;
         transition: 0.2s;
+        height: 48px;
       }
       .reveal-btn:hover {
         background: rgba(244, 63, 94, 0.1);
@@ -548,8 +582,168 @@
         padding: 40px;
         border-radius: 30px;
         text-align: center;
+        width: 90%;
         max-width: 400px;
         backdrop-filter: blur(20px);
+      }
+
+      /* Dynamic Game Texts */
+      #scrambled-word {
+        font-size: 4em;
+        color: #38bdf8;
+        margin: 20px 0;
+        font-weight: bold;
+        letter-spacing: 6px;
+        word-break: break-all;
+        line-height: 1.1;
+      }
+      #math-equation {
+        font-size: 5.5em;
+        color: #818cf8;
+        margin: 30px 0 40px 0;
+        font-weight: bold;
+      }
+      #color-word {
+        font-size: 6em;
+        margin: 40px 0;
+        font-weight: bold;
+      }
+
+      /* =========================================
+           📱 RESPONSIVE MEDIA QUERIES (MOBILE/TABLET)
+           ========================================= */
+      @media (max-width: 768px) {
+        /* Adjust Top Stats */
+        .stats-dashboard {
+          top: 10px;
+          left: 10px;
+          gap: 6px;
+          max-width: 65%;
+        }
+        .stat-item {
+          padding: 6px 10px;
+          font-size: 0.75em;
+        }
+        .top-right-about {
+          top: 10px;
+          right: 10px;
+          padding: 6px 10px;
+          font-size: 0.75em;
+        }
+
+        /* Adjust Headers */
+        .chat-header {
+          padding-top: 12vh;
+        }
+        .gradient-text {
+          font-size: 2.8em;
+        }
+        .sub-greeting {
+          font-size: 1.1em;
+        }
+
+        /* Chat Area */
+        .chat-box {
+          margin-top: 80px;
+          padding: 15px;
+          gap: 15px;
+        }
+        .message {
+          font-size: 1.1em;
+          max-width: 90%;
+        }
+
+        /* Bottom Input Area */
+        .bottom-section {
+          padding-bottom: 20px;
+        }
+        .input-wrapper {
+          padding: 5px 5px 5px 15px;
+          height: 55px;
+        }
+        input[type="text"] {
+          font-size: 1.1em;
+        }
+
+        /* Shrink Send button text to just icon */
+        .send-btn {
+          min-width: 42px;
+          padding: 0 15px;
+          height: 42px;
+        }
+        .send-text {
+          display: none;
+        }
+
+        /* Reveal button adjustments */
+        .outside-reveal-btn {
+          height: 55px;
+          padding: 0 15px;
+          font-size: 1em;
+        }
+
+        .action-bar {
+          gap: 8px;
+        }
+        .action-btn {
+          padding: 8px 15px;
+          font-size: 0.9em;
+        }
+        .suggestions-container {
+          padding: 10px;
+          gap: 8px;
+        }
+
+        /* Game Hub Modals */
+        .close-game-btn {
+          top: 15px;
+          right: 15px;
+          font-size: 35px;
+        }
+        .game-card {
+          padding: 20px 15px;
+        }
+        .game-title {
+          font-size: 2.4em !important;
+          margin-bottom: 20px;
+        }
+
+        #scrambled-word {
+          font-size: 2.5em;
+          letter-spacing: 2px;
+        }
+        #math-equation {
+          font-size: 3.5em;
+          margin: 20px 0;
+        }
+        #color-word {
+          font-size: 4em;
+          margin: 20px 0;
+        }
+
+        .game-input-box {
+          height: 55px;
+          font-size: 1.2em;
+          padding: 10px;
+        }
+        .hint-text {
+          font-size: 1em;
+        }
+
+        /* Make buttons stack on very small screens */
+        .btn-row {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .reveal-btn,
+        .send-btn {
+          width: 100%;
+          height: 50px;
+          font-size: 1.1em !important;
+        }
+        .modal-card {
+          padding: 25px;
+        }
       }
     </style>
   </head>
@@ -582,7 +776,7 @@
               autocomplete="off"
             />
             <button class="send-btn" onclick="sendMessage()">
-              <span>Send</span>
+              <span class="send-text">Send</span>
               <span style="font-size: 1.2em">↑</span>
             </button>
           </div>
@@ -616,44 +810,19 @@
       </div>
 
       <div class="game-overlay" id="game-overlay">
-        <button
-          onclick="toggleGame()"
-          style="
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 45px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: 0.3s;
-          "
-        >
-          &times;
-        </button>
+        <button class="close-game-btn" onclick="toggleGame()">&times;</button>
 
         <div class="game-card">
           <div id="game-menu-view" class="view-container">
-            <h1
-              class="gradient-text"
-              style="
-                margin-bottom: 35px;
-                font-size: 3.8em;
-                letter-spacing: -2px;
-              "
-            >
-              Select Training
-            </h1>
+            <h1 class="gradient-text game-title">Select Training</h1>
             <button
               class="action-btn"
               style="
                 width: 100%;
                 max-width: 400px;
                 padding: 15px;
-                margin-bottom: 20px;
-                font-size: 1em;
+                margin-bottom: 15px;
+                font-size: 1.1em;
               "
               onclick="openGame('scramble')"
             >
@@ -665,8 +834,8 @@
                 width: 100%;
                 max-width: 400px;
                 padding: 15px;
-                margin-bottom: 20px;
-                font-size: 1em;
+                margin-bottom: 15px;
+                font-size: 1.1em;
               "
               onclick="openGame('math')"
             >
@@ -678,7 +847,7 @@
                 width: 100%;
                 max-width: 400px;
                 padding: 15px;
-                font-size: 1em;
+                font-size: 1.1em;
               "
               onclick="openGame('color')"
             >
@@ -694,16 +863,7 @@
             <button class="back-btn" onclick="openGame('menu')">
               ← Back to Menu
             </button>
-            <h1
-              class="gradient-text"
-              style="
-                margin-bottom: 20px;
-                font-size: 2.8em;
-                letter-spacing: -1px;
-              "
-            >
-              Word Scramble
-            </h1>
+            <h1 class="gradient-text game-title">Word Scramble</h1>
 
             <div class="diff-container">
               <button
@@ -729,18 +889,7 @@
               </button>
             </div>
 
-            <div
-              id="scrambled-word"
-              style="
-                font-size: 4em;
-                color: #38bdf8;
-                margin: 20px 0;
-                font-weight: bold;
-                letter-spacing: 6px;
-                word-break: break-all;
-                line-height: 1.1;
-              "
-            ></div>
+            <div id="scrambled-word"></div>
 
             <div id="scramble-hint" class="hint-text"></div>
 
@@ -785,16 +934,7 @@
             <button class="back-btn" onclick="openGame('menu')">
               ← Back to Menu
             </button>
-            <h1
-              class="gradient-text"
-              style="
-                margin-bottom: 20px;
-                font-size: 2.8em;
-                letter-spacing: -1px;
-              "
-            >
-              Math Sprint
-            </h1>
+            <h1 class="gradient-text game-title">Math Sprint</h1>
 
             <div class="diff-container">
               <button
@@ -820,15 +960,7 @@
               </button>
             </div>
 
-            <div
-              id="math-equation"
-              style="
-                font-size: 5.5em;
-                color: #818cf8;
-                margin: 30px 0 40px 0;
-                font-weight: bold;
-              "
-            ></div>
+            <div id="math-equation"></div>
 
             <input
               type="number"
@@ -868,26 +1000,12 @@
             <button class="back-btn" onclick="openGame('menu')">
               ← Back to Menu
             </button>
-            <h1
-              class="gradient-text"
-              style="
-                margin-bottom: 10px;
-                font-size: 2.8em;
-                letter-spacing: -1px;
-              "
-            >
-              Color Clash
-            </h1>
+            <h1 class="gradient-text game-title">Color Clash</h1>
             <p style="color: #cbd5e1; font-size: 1.1em">
               Does the text match its color?
             </p>
 
-            <div
-              id="color-word"
-              style="font-size: 6em; margin: 40px 0; font-weight: bold"
-            >
-              RED
-            </div>
+            <div id="color-word">RED</div>
 
             <div
               id="color-message"
@@ -938,23 +1056,7 @@
         id="about-overlay"
         style="background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(15px)"
       >
-        <button
-          onclick="toggleAbout()"
-          style="
-            position: absolute;
-            top: 40px;
-            right: 40px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 35px;
-            cursor: pointer;
-            opacity: 0.6;
-            transition: 0.3s;
-          "
-        >
-          &times;
-        </button>
+        <button class="close-game-btn" onclick="toggleAbout()">&times;</button>
         <div class="modal-card">
           <h2 style="margin-bottom: 15px; color: #38bdf8">About Think First</h2>
           <p style="line-height: 1.6; color: #cbd5e1; margin-bottom: 20px">
@@ -967,7 +1069,7 @@
           <h3 style="color: #fff">Prashant Singh Suriya</h3>
           <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
           <p style="font-size: 0.8em; color: #38bdf8">
-            v13.5 • Clean UI Edition
+            v14.0 • Fully Responsive Edition
           </p>
         </div>
       </div>
@@ -1025,10 +1127,8 @@
           isFirstMessage = false;
         }
 
-        // Display user intent
         appendMessage("user", "💡 Inspire Me");
 
-        // Show a brief loading state for realism
         const loadingId = "loading-" + Date.now();
         const loadingDiv = document.createElement("div");
         loadingDiv.className = "message bot-message";
@@ -1037,7 +1137,6 @@
         chatBox.appendChild(loadingDiv);
         chatBox.scrollTop = chatBox.scrollHeight;
 
-        // Fetch a random quote and inject it directly without hitting the API
         setTimeout(() => {
           document.getElementById(loadingId).remove();
           const quote =
