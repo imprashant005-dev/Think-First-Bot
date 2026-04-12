@@ -348,6 +348,7 @@
         margin-top: 20px;
         flex-wrap: wrap;
         justify-content: center;
+        width: 100%;
       }
       .action-btn {
         background: rgba(255, 255, 255, 0.03);
@@ -655,43 +656,54 @@
 
         /* Bottom Input Area */
         .bottom-section {
-          padding-bottom: 20px;
+          padding-bottom: 25px;
         }
         .input-wrapper {
-          padding: 5px 5px 5px 15px;
+          padding: 6px 6px 6px 15px;
           height: 55px;
         }
         input[type="text"] {
           font-size: 1.1em;
         }
 
-        /* Shrink Send button text to just icon */
+        /* PERFECT CIRCLE SEND BUTTON FOR MOBILE */
         .send-btn {
-          min-width: 42px;
-          padding: 0 15px;
-          height: 42px;
+          width: 44px;
+          min-width: 44px;
+          height: 44px;
+          padding: 0;
+          border-radius: 50%;
         }
         .send-text {
           display: none;
         }
+        .send-btn span:last-child {
+          font-size: 1.6em !important;
+        }
 
-        /* Reveal button adjustments */
         .outside-reveal-btn {
           height: 55px;
           padding: 0 15px;
           font-size: 1em;
         }
 
+        /* HORIZONTAL SCROLLING FOR MOBILE ACTION BAR */
         .action-bar {
-          gap: 8px;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          justify-content: flex-start;
+          width: 100%;
+          padding-bottom: 5px; /* Room for touch scroll */
+          scrollbar-width: none; /* Hide scrollbar Firefox */
         }
+        .action-bar::-webkit-scrollbar {
+          display: none;
+        } /* Hide scrollbar Chrome/Safari */
         .action-btn {
-          padding: 8px 15px;
+          white-space: nowrap;
+          flex-shrink: 0;
+          padding: 8px 16px;
           font-size: 0.9em;
-        }
-        .suggestions-container {
-          padding: 10px;
-          gap: 8px;
         }
 
         /* Game Hub Modals */
@@ -730,7 +742,7 @@
           font-size: 1em;
         }
 
-        /* Make buttons stack on very small screens */
+        /* Stack reveal and submit buttons inside games */
         .btn-row {
           flex-direction: column;
           gap: 10px;
@@ -740,6 +752,7 @@
           width: 100%;
           height: 50px;
           font-size: 1.1em !important;
+          border-radius: 25px;
         }
         .modal-card {
           padding: 25px;
@@ -1069,7 +1082,7 @@
           <h3 style="color: #fff">Prashant Singh Suriya</h3>
           <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
           <p style="font-size: 0.8em; color: #38bdf8">
-            v14.0 • Fully Responsive Edition
+            v14.1 • Final Mobile Fix
           </p>
         </div>
       </div>
