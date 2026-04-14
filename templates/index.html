@@ -7,16 +7,37 @@
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
     <title>Think First Bot</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <style>
-      /* --- GLOBAL STYLES --- */
-      * {
+      :root {
+        --bg: #0a0a0a;
+        --surface: #111111;
+        --surface2: #1a1a1a;
+        --border: #2a2a2a;
+        --border2: #3a3a3a;
+        --text: #f0f0f0;
+        --text-dim: #888888;
+        --text-muted: #444444;
+        --accent: #f0f0f0;
+        --danger: #ff3b3b;
+        --success: #d4f0d4;
+        --gold: #d4aa50;
+        --font-head: "Syne", sans-serif;
+        --font-mono: "DM Mono", monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Segoe UI", system-ui, sans-serif;
       }
 
       html,
@@ -25,111 +46,111 @@
         height: 100dvh;
         width: 100%;
         overflow: hidden;
-        color: #e3e3e3;
-        background-color: #020617;
+        font-family: var(--font-mono);
+        background: var(--bg);
+        color: var(--text);
+      }
+
+      /* Grain overlay */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        pointer-events: none;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 180px 180px;
+        opacity: 0.6;
+      }
+
+      /* Subtle grid lines on bg */
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
         background-image:
-          radial-gradient(
-            at 10% 20%,
-            rgba(14, 165, 233, 0.25) 0px,
-            transparent 40%
-          ),
-          radial-gradient(
-            at 80% 10%,
-            rgba(99, 102, 241, 0.25) 0px,
-            transparent 40%
-          ),
-          radial-gradient(
-            at 50% 50%,
-            rgba(6, 182, 212, 0.2) 0px,
-            transparent 50%
-          ),
-          radial-gradient(
-            at 90% 80%,
-            rgba(59, 130, 246, 0.25) 0px,
-            transparent 40%
-          ),
-          radial-gradient(
-            at 20% 80%,
-            rgba(30, 58, 138, 0.4) 0px,
-            transparent 40%
+          linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px
           );
-        background-size: 150% 150%;
-        animation: cosmicFlow 12s ease-in-out infinite alternate;
+        background-size: 40px 40px;
       }
 
-      @keyframes cosmicFlow {
-        0% {
-          background-position: 0% 0%;
-        }
-        50% {
-          background-position: 100% 50%;
-        }
-        100% {
-          background-position: 50% 100%;
-        }
-      }
-
+      /* ─── LAYOUT ─────────────────────────── */
       .chat-container {
+        position: relative;
+        z-index: 1;
         width: 100%;
-        max-width: 850px;
+        max-width: 820px;
         height: 100%;
+        margin: 0 auto;
         display: flex;
         flex-direction: column;
-        position: relative;
-        margin: 0 auto;
       }
 
-      /* --- TOP DASHBOARD ELEMENTS --- */
-      .stats-dashboard {
+      /* ─── TOP BAR ────────────────────────── */
+      .top-bar {
         position: fixed;
-        top: 15px;
-        left: 15px;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 820px;
         display: flex;
-        gap: 10px;
-        z-index: 10;
-        width: max-content;
-        flex-wrap: wrap;
-        max-width: 65%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        background: rgba(10, 10, 10, 0.85);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border);
+        z-index: 200;
       }
 
-      .stat-item {
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 8px 15px;
-        border-radius: 12px;
-        font-size: 0.85em;
-        color: #e3e3e3;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      .stats-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .stat-pill {
         display: flex;
         align-items: center;
         gap: 5px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 5px 12px;
+        border-radius: 2px;
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        letter-spacing: 0.05em;
       }
-
-      .top-right-about {
-        position: fixed;
-        top: 15px;
-        right: 15px;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 8px 15px;
-        border-radius: 12px;
-        font-size: 0.85em;
-        color: #e3e3e3;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        transition: all 0.3s ease;
-        z-index: 500;
+      .stat-pill span.val {
+        color: var(--text);
         font-weight: 500;
       }
-      .top-right-about:hover {
-        background: rgba(255, 255, 255, 0.15);
-        transform: translateY(-2px);
-        border-color: rgba(255, 255, 255, 0.4);
+
+      .about-btn {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        padding: 5px 14px;
+        border-radius: 2px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.06em;
+        transition: all 0.2s;
+      }
+      .about-btn:hover {
+        border-color: var(--text);
+        color: var(--text);
       }
 
-      /* --- CHAT AREA --- */
+      /* ─── CHAT AREA ──────────────────────── */
       .chat-box {
         flex-grow: 1;
         padding: 20px;
@@ -137,986 +158,1144 @@
         overflow-x: hidden;
         display: flex;
         flex-direction: column;
-        gap: 24px;
-        scrollbar-width: none;
-        margin-top: 70px;
-        -webkit-overflow-scrolling: touch;
+        gap: 20px;
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+        margin-top: 57px;
       }
       .chat-box::-webkit-scrollbar {
-        display: none;
+        width: 4px;
+      }
+      .chat-box::-webkit-scrollbar-thumb {
+        background: var(--border);
       }
 
+      /* ─── HERO ───────────────────────────── */
       .chat-header {
-        text-align: center;
-        margin: auto 0;
-        padding: 20px 0;
-        transition: opacity 0.5s ease;
+        text-align: left;
+        padding: 32px 0 10px;
       }
-      .gradient-text {
-        font-size: 3.8em;
-        font-weight: bold;
-        letter-spacing: -2px;
-        background: linear-gradient(
-          74deg,
-          #38bdf8 0,
-          #818cf8 25%,
-          #e0e7ff 50%,
-          #e3e3e3 80%
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
+      .hero-title {
+        font-family: var(--font-head);
+        font-size: clamp(2.8rem, 8vw, 5rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        color: var(--text);
       }
-      .sub-greeting {
-        color: #cbd5e1;
-        font-size: 1.5em;
-        margin-top: 15px;
-        opacity: 0.9;
-        transition: opacity 0.3s ease;
+      .hero-title .dot {
+        color: var(--danger);
+      }
+      .hero-sub {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        margin-top: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
       }
 
       .suggestions-container {
         display: flex;
         flex-wrap: wrap;
-        gap: 14px;
-        justify-content: center;
-        padding: 20px 0;
-        margin-top: 10px;
+        gap: 8px;
+        padding: 18px 0 10px;
       }
       .suggestion-chip {
-        background-color: rgba(255, 255, 255, 0.03);
-        color: #e3e3e3;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 12px 20px;
-        border-radius: 14px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        padding: 8px 14px;
+        border-radius: 2px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        backdrop-filter: blur(10px);
-        font-size: 0.95em;
-        font-weight: 500;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+        transition: all 0.2s;
       }
       .suggestion-chip:hover {
-        background-color: rgba(255, 255, 255, 0.08);
-        border-color: #38bdf8;
-        transform: translateY(-3px);
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border-color: var(--text);
+        color: var(--text);
+        background: var(--surface2);
       }
 
+      /* ─── MESSAGES ───────────────────────── */
       .message {
         width: fit-content;
-        max-width: 85%;
-        line-height: 1.6;
-        font-size: 1.3em;
-        animation: fadeIn 0.4s ease forwards;
+        max-width: 82%;
+        line-height: 1.65;
+        font-size: 0.95rem;
+        animation: msgIn 0.3s ease forwards;
       }
-      @keyframes fadeIn {
+      @keyframes msgIn {
         from {
           opacity: 0;
-          transform: translateY(10px);
+          transform: translateY(8px);
         }
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
-
       .user-message {
         align-self: flex-end;
-        background-color: rgba(255, 255, 255, 0.1);
-        padding: 14px 22px;
-        border-radius: 22px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        padding: 12px 18px;
+        border-radius: 2px 2px 0 2px;
       }
       .bot-message {
         align-self: flex-start;
+        border-left: 2px solid var(--border2);
+        padding: 4px 16px;
+      }
+      .bot-message p {
+        margin-bottom: 8px;
+      }
+      .bot-message p:last-child {
+        margin-bottom: 0;
+      }
+      .bot-message strong {
+        color: var(--text);
+        font-weight: 500;
+      }
+      .bot-message code {
+        background: var(--surface2);
+        padding: 2px 6px;
+        border-radius: 2px;
+        font-size: 0.88em;
       }
 
-      /* --- BOTTOM SECTION --- */
+      /* ─── BOTTOM ─────────────────────────── */
       .bottom-section {
-        padding-bottom: 25px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-left: 15px;
-        padding-right: 15px;
         z-index: 100;
+        padding: 0 16px 18px;
+        background: linear-gradient(transparent, var(--bg) 20%);
       }
-
-      .bottom-area-row {
+      .input-row {
         display: flex;
-        width: 100%;
-        gap: 12px;
+        gap: 8px;
         align-items: center;
+        margin-bottom: 10px;
       }
-
       .input-wrapper {
         flex-grow: 1;
-        background-color: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(10px);
-        border-radius: 50px;
         display: flex;
         align-items: center;
-        padding: 8px 10px 8px 25px;
-        gap: 15px;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        transition:
-          border-color 0.3s,
-          box-shadow 0.3s,
-          transform 0.3s;
-      }
-      .input-wrapper:hover {
-        border-color: rgba(255, 255, 255, 0.4);
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 0 6px 0 16px;
+        gap: 8px;
+        transition: border-color 0.2s;
       }
       .input-wrapper:focus-within {
-        border-color: #38bdf8;
-        box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
-        transform: translateY(0);
+        border-color: var(--text);
       }
 
-      input[type="text"] {
+      input[type="text"],
+      input[type="number"] {
         flex-grow: 1;
-        background: transparent;
+        background: none;
         border: none;
-        font-size: 1.2em;
-        color: #e3e3e3;
+        font-family: var(--font-mono);
+        font-size: 0.9rem;
+        color: var(--text);
         outline: none;
-        width: 100%;
+        padding: 14px 0;
       }
-      input[type="number"]::-webkit-inner-spin-button,
-      input[type="number"]::-webkit-outer-spin-button {
+      input[type="number"]::-webkit-inner-spin-button {
         -webkit-appearance: none;
-        margin: 0;
+      }
+      input::placeholder {
+        color: var(--text-muted);
       }
 
       .send-btn {
-        background: #ffffff;
-        color: #020617;
-        border: 1px solid transparent;
-        height: 48px;
-        min-width: 48px;
-        padding: 0 24px;
-        border-radius: 40px;
-        font-weight: bold;
+        background: var(--text);
+        color: var(--bg);
+        border: none;
+        padding: 9px 20px;
         cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-      }
-      .send-btn:hover {
-        background: #38bdf8;
-        color: white;
-        box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-        transform: scale(1.05);
-      }
-      .send-btn:active {
-        transform: scale(0.95);
-      }
-      .send-text {
-        display: inline;
-      }
-
-      .outside-reveal-btn {
-        background: rgba(15, 23, 42, 0.7);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(244, 63, 94, 0.4);
-        color: #f43f5e;
-        height: 64px;
-        border-radius: 50px;
-        padding: 0 25px;
-        font-weight: 600;
-        font-size: 1.1em;
-        cursor: pointer;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
+        font-family: var(--font-mono);
+        font-weight: 500;
+        font-size: 0.82rem;
+        letter-spacing: 0.07em;
+        transition: all 0.2s;
         white-space: nowrap;
       }
-      .outside-reveal-btn:hover {
-        background: rgba(244, 63, 94, 0.1);
-        border-color: #f43f5e;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px rgba(244, 63, 94, 0.2);
+      .send-btn:hover {
+        background: #d0d0d0;
       }
-      .outside-reveal-btn:active {
-        transform: scale(0.95);
+      .send-btn:active {
+        transform: scale(0.97);
+      }
+
+      .reveal-btn-outer {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        padding: 0 16px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        letter-spacing: 0.06em;
+        height: 48px;
+        white-space: nowrap;
+        transition: all 0.2s;
+      }
+      .reveal-btn-outer:hover {
+        border-color: var(--danger);
+        color: var(--danger);
       }
 
       .action-bar {
         display: flex;
-        gap: 15px;
-        margin-top: 15px;
+        gap: 8px;
         flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
+        justify-content: flex-start;
       }
       .action-btn {
-        background: rgba(255, 255, 255, 0.03);
-        color: #e3e3e3;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 10px 20px;
-        border-radius: 20px;
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        padding: 8px 16px;
         cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        font-size: 1em;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.06em;
+        transition: all 0.2s;
+        border-radius: 2px;
       }
       .action-btn:hover {
-        background: rgba(255, 255, 255, 0.08);
-        transform: translateY(-2px);
-        border-color: rgba(255, 255, 255, 0.4);
+        border-color: var(--text);
+        color: var(--text);
+        background: var(--surface);
       }
 
-      /* --- FULLSCREEN GAME OVERLAY --- */
-      .game-overlay {
+      /* ─── OVERLAYS ───────────────────────── */
+      .overlay {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        height: 100dvh;
-        background-color: #020617;
-        background-image:
-          radial-gradient(
-            at 10% 20%,
-            rgba(14, 165, 233, 0.25) 0px,
-            transparent 40%
-          ),
-          radial-gradient(
-            at 80% 10%,
-            rgba(99, 102, 241, 0.25) 0px,
-            transparent 40%
-          ),
-          radial-gradient(
-            at 50% 50%,
-            rgba(6, 182, 212, 0.2) 0px,
-            transparent 50%
-          ),
-          radial-gradient(
-            at 90% 80%,
-            rgba(59, 130, 246, 0.25) 0px,
-            transparent 40%
-          ),
-          radial-gradient(
-            at 20% 80%,
-            rgba(30, 58, 138, 0.4) 0px,
-            transparent 40%
-          );
-        background-size: 150% 150%;
-        animation: cosmicFlow 12s ease-in-out infinite alternate;
+        inset: 0;
         z-index: 1000;
+        background: rgba(10, 10, 10, 0.96);
+        backdrop-filter: blur(8px);
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
-        opacity: 0;
-        pointer-events: none;
-        transition: 0.4s ease-in-out;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
       }
-      .game-overlay.active {
+      .overlay.active {
         opacity: 1;
         pointer-events: all;
       }
 
-      .close-game-btn {
-        position: absolute;
-        top: 30px;
-        right: 30px;
+      .overlay-close {
+        position: sticky;
+        top: 0;
+        left: 100%;
+        margin-left: auto;
         background: none;
         border: none;
-        color: white;
-        font-size: 45px;
+        color: var(--text-dim);
+        font-size: 2rem;
         cursor: pointer;
-        opacity: 0.6;
-        transition: 0.3s;
-        z-index: 1001;
-      }
-
-      @keyframes loadingPulse {
-        0% {
-          opacity: 0.4;
-          transform: scale(0.98);
-        }
-        100% {
-          opacity: 1;
-          transform: scale(1.02);
-        }
-      }
-
-      .game-card {
-        background: transparent;
-        border: none;
-        box-shadow: none;
-        padding: 40px 20px;
-        text-align: center;
-        width: 100%;
-        max-width: 750px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: auto;
-      }
-
-      .view-container {
-        width: 100%;
-      }
-      .game-title {
-        margin-bottom: 30px;
-        font-size: 3.8em;
-        letter-spacing: -2px;
-      }
-
-      .back-btn {
-        background: none;
-        border: none;
-        color: #94a3b8;
-        font-size: 1.1em;
-        cursor: pointer;
-        display: block;
-        margin: 0 auto 20px auto;
+        padding: 16px 20px;
+        line-height: 1;
         transition: color 0.2s;
-        font-weight: 500;
+        z-index: 10;
+        align-self: flex-end;
       }
-      .back-btn:hover {
-        color: #fff;
+      .overlay-close:hover {
+        color: var(--text);
       }
 
-      .game-input-box {
+      /* ─── GAME WRAPPER ───────────────────── */
+      .game-wrap {
         width: 100%;
-        max-width: 400px;
-        height: 70px;
+        max-width: 560px;
+        padding: 0 20px 40px;
+        margin: 0 auto;
+      }
+
+      .game-view {
+        display: none;
+        animation: msgIn 0.3s ease;
+      }
+      .game-view.active {
         display: block;
-        margin: 0 auto 25px auto;
-        padding: 10px 20px;
-        border-radius: 15px;
-        background: rgba(15, 23, 42, 0.4);
-        backdrop-filter: blur(10px);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        text-align: center;
-        font-size: 1.5em;
-        outline: none;
+      }
+
+      .game-menu-grid {
+        display: grid;
+        gap: 12px;
+        margin-top: 24px;
+      }
+      .game-menu-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 24px 28px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        border-radius: 2px;
+      }
+      .game-menu-card:hover {
+        border-color: var(--text);
+        background: var(--surface2);
+        transform: translateX(4px);
+      }
+      .game-menu-card .card-icon {
+        font-size: 2rem;
+        flex-shrink: 0;
+      }
+      .game-menu-card .card-info {
+        flex-grow: 1;
+      }
+      .game-menu-card .card-title {
+        font-family: var(--font-head);
+        font-weight: 700;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+      }
+      .game-menu-card .card-desc {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        margin-top: 3px;
+      }
+      .game-menu-card .card-badge {
+        font-size: 0.68rem;
+        color: var(--danger);
+        border: 1px solid var(--danger);
+        padding: 2px 8px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      /* ─── GAME HEADER ────────────────────── */
+      .game-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 0;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 20px;
+      }
+      .game-title-small {
+        font-family: var(--font-head);
+        font-weight: 800;
+        font-size: 1.4rem;
+        letter-spacing: -0.02em;
+      }
+      .score-display {
+        display: flex;
+        gap: 16px;
+        align-items: center;
+      }
+      .score-item {
+        text-align: right;
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .score-item .score-val {
+        display: block;
+        font-family: var(--font-head);
+        font-size: 1.2rem;
+        color: var(--text);
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .score-item.streak-col .score-val {
+        color: var(--gold);
+      }
+
+      .back-link {
+        background: none;
+        border: none;
+        color: var(--text-dim);
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        cursor: pointer;
+        padding: 0;
+        letter-spacing: 0.06em;
+        transition: color 0.2s;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+      }
+      .back-link:hover {
+        color: var(--text);
+      }
+
+      /* ─── DIFFICULTY TABS ────────────────── */
+      .diff-row {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 20px;
+      }
+      .diff-tab {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
+        padding: 6px 16px;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.2s;
+        border-radius: 2px;
+      }
+      .diff-tab.active {
+        background: var(--text);
+        color: var(--bg);
+        border-color: var(--text);
+      }
+
+      /* ─── TIMER BAR ──────────────────────── */
+      .timer-bar-wrap {
+        width: 100%;
+        height: 4px;
+        background: var(--border);
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+      .timer-bar {
+        height: 100%;
+        background: var(--text);
         transition:
-          border-color 0.3s,
-          box-shadow 0.3s;
+          width 0.1s linear,
+          background 0.3s;
+        border-radius: 0;
       }
-      .game-input-box:focus {
-        border-color: #38bdf8;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+      .timer-bar.danger {
+        background: var(--danger);
       }
-      .game-input-box:disabled {
-        opacity: 0.5;
+
+      /* ─── GAME BIG DISPLAY ───────────────── */
+      .big-display {
+        text-align: center;
+        font-family: var(--font-head);
+        font-size: clamp(3rem, 12vw, 5.5rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1;
+        margin: 20px 0 28px;
+        color: var(--text);
+      }
+      .big-display.mono {
+        font-family: var(--font-mono);
+        font-size: clamp(2.2rem, 8vw, 4rem);
+        letter-spacing: 0.18em;
+      }
+
+      .hint-box {
+        background: var(--surface);
+        border-left: 3px solid var(--border2);
+        padding: 12px 16px;
+        margin-bottom: 20px;
+        font-size: 0.83rem;
+        color: var(--text-dim);
+        line-height: 1.55;
+        font-style: italic;
+      }
+      .hint-box.loading {
+        animation: pulse 1.2s ease infinite alternate;
+      }
+      @keyframes pulse {
+        from {
+          opacity: 0.4;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* ─── COMBO FLASH ────────────────────── */
+      .combo-banner {
+        text-align: center;
+        height: 28px;
+        margin-bottom: 8px;
+        font-family: var(--font-head);
+        font-size: 1rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        overflow: hidden;
+      }
+      .combo-banner span {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.25s;
+      }
+      .combo-banner span.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* ─── GAME INPUT ─────────────────────── */
+      .game-input {
+        width: 100%;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-top: 3px solid var(--border);
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 1.2rem;
+        padding: 16px 20px;
+        outline: none;
+        text-align: center;
+        transition: border-color 0.2s;
+        border-radius: 0;
+        margin-bottom: 14px;
+      }
+      .game-input:focus {
+        border-top-color: var(--text);
+      }
+      .game-input.correct {
+        border-top-color: #5cf55c;
+      }
+      .game-input.wrong {
+        border-top-color: var(--danger);
+        animation: shake 0.3s;
+      }
+      .game-input:disabled {
+        opacity: 0.4;
         cursor: not-allowed;
       }
 
-      .hint-text {
-        color: #cbd5e1;
-        font-size: 1.2em;
-        font-style: italic;
-        margin-top: -10px;
-        margin-bottom: 25px;
-        line-height: 1.5;
-        background: rgba(15, 23, 42, 0.5);
-        padding: 15px;
-        border-radius: 12px;
-        border-left: 4px solid #38bdf8;
-        text-align: left;
-      }
-      .loading-text {
-        animation: loadingPulse 1s infinite alternate;
-        color: #94a3b8 !important;
+      @keyframes shake {
+        0%,
+        100% {
+          transform: translateX(0);
+        }
+        20%,
+        60% {
+          transform: translateX(-6px);
+        }
+        40%,
+        80% {
+          transform: translateX(6px);
+        }
       }
 
-      .diff-container {
+      /* ─── GAME BTN ROW ───────────────────── */
+      .game-btn-row {
         display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin-bottom: 25px;
-        flex-wrap: wrap;
+        gap: 8px;
       }
-      .diff-btn {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        color: #e3e3e3;
-        padding: 8px 20px;
-        border-radius: 10px;
+      .game-btn {
+        flex: 1;
+        padding: 14px;
         cursor: pointer;
-        font-size: 0.95em;
+        font-family: var(--font-mono);
         font-weight: 500;
-        transition: 0.2s;
+        font-size: 0.88rem;
+        letter-spacing: 0.06em;
+        border-radius: 2px;
+        transition: all 0.2s;
       }
-      .diff-btn.active {
-        background: #38bdf8;
-        color: #020617;
-        border-color: #38bdf8;
-        font-weight: bold;
+      .game-btn.primary {
+        background: var(--text);
+        color: var(--bg);
+        border: none;
       }
-
-      .btn-row {
-        display: flex;
-        gap: 12px;
-        width: 100%;
-        max-width: 400px;
-        margin: 0 auto;
+      .game-btn.primary:hover {
+        background: #d0d0d0;
       }
-      .reveal-btn {
-        background: rgba(255, 255, 255, 0.05);
-        color: #e3e3e3;
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        border-radius: 40px;
-        padding: 0 25px;
-        font-weight: bold;
-        cursor: pointer;
-        transition: 0.2s;
-        height: 48px;
+      .game-btn.secondary {
+        background: none;
+        border: 1px solid var(--border);
+        color: var(--text-dim);
       }
-      .reveal-btn:hover {
-        background: rgba(244, 63, 94, 0.1);
-        border-color: #f43f5e;
-        color: #f43f5e;
+      .game-btn.secondary:hover {
+        border-color: var(--danger);
+        color: var(--danger);
       }
 
-      .modal-card {
-        background: rgba(15, 23, 42, 0.85);
-        border: 1px solid rgba(255, 255, 255, 0.25);
-        padding: 40px;
-        border-radius: 30px;
+      /* ─── COLOR CLASH ────────────────────── */
+      .color-word-big {
         text-align: center;
-        width: 90%;
-        max-width: 400px;
-        backdrop-filter: blur(20px);
+        font-family: var(--font-head);
+        font-size: clamp(4rem, 16vw, 7rem);
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        margin: 24px 0 32px;
+        transition: color 0.2s;
+      }
+      .color-btn-row {
+        display: flex;
+        gap: 10px;
+      }
+      .color-btn {
+        flex: 1;
+        padding: 16px 10px;
+        cursor: pointer;
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        font-weight: 500;
+        letter-spacing: 0.06em;
+        background: none;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+      .color-btn.match {
+        border: 2px solid #555;
+        color: #888;
+      }
+      .color-btn.mismatch {
+        border: 2px solid #555;
+        color: #888;
+      }
+      .color-btn.match:hover {
+        border-color: #5cf55c;
+        color: #5cf55c;
+      }
+      .color-btn.mismatch:hover {
+        border-color: var(--danger);
+        color: var(--danger);
       }
 
-      /* Dynamic Game Texts */
-      #scrambled-word {
-        font-size: 4em;
-        color: #38bdf8;
+      /* ─── LIVES ──────────────────────────── */
+      .lives-row {
+        display: flex;
+        gap: 6px;
+        justify-content: center;
+        margin-bottom: 16px;
+      }
+      .life-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--text);
+        transition: all 0.3s;
+      }
+      .life-dot.lost {
+        background: var(--border);
+        transform: scale(0.7);
+      }
+
+      /* ─── GAME OVER MODAL ────────────────── */
+      .game-over-panel {
+        display: none;
+        text-align: center;
+        padding: 24px 0;
+      }
+      .game-over-panel.active {
+        display: block;
+        animation: msgIn 0.4s ease;
+      }
+      .game-over-title {
+        font-family: var(--font-head);
+        font-weight: 800;
+        font-size: 2.4rem;
+        letter-spacing: -0.03em;
+        margin-bottom: 8px;
+      }
+      .final-score-box {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        padding: 24px;
         margin: 20px 0;
-        font-weight: bold;
-        letter-spacing: 6px;
-        word-break: break-all;
-        line-height: 1.1;
+        border-radius: 2px;
       }
-      #math-equation {
-        font-size: 5.5em;
-        color: #818cf8;
-        margin: 30px 0 40px 0;
-        font-weight: bold;
+      .final-score-box .fs-label {
+        font-size: 0.7rem;
+        color: var(--text-dim);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
       }
-      #color-word {
-        font-size: 6em;
-        margin: 40px 0;
-        font-weight: bold;
+      .final-score-box .fs-val {
+        font-family: var(--font-head);
+        font-size: 3.5rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+        line-height: 1;
+        color: var(--text);
+      }
+      .final-score-box .fs-hi {
+        font-size: 0.78rem;
+        color: var(--gold);
+        margin-top: 6px;
       }
 
-      /* =========================================
-             📱 RESPONSIVE MEDIA QUERIES (MOBILE/TABLET)
-             ========================================= */
-      @media (max-width: 768px) {
-        .stats-dashboard {
-          top: 10px;
-          left: 10px;
-          gap: 6px;
-          max-width: 65%;
+      /* ─── ABOUT MODAL ────────────────────── */
+      .about-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        max-width: 380px;
+        width: 90%;
+        margin: auto;
+        padding: 36px;
+        border-radius: 2px;
+        text-align: center;
+        margin-top: -20px;
+      }
+      .about-card h2 {
+        font-family: var(--font-head);
+        font-weight: 800;
+        font-size: 1.6rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 12px;
+      }
+      .about-card p {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+      }
+      .about-card .dev-name {
+        font-family: var(--font-head);
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-top: 20px;
+      }
+      .about-card .version {
+        font-size: 0.68rem;
+        color: var(--text-muted);
+        letter-spacing: 0.1em;
+        margin-top: 12px;
+      }
+
+      /* ─── LOADING DOT ANIM ───────────────── */
+      .loading-dots::after {
+        content: "";
+        animation: dots 1.2s infinite;
+      }
+      @keyframes dots {
+        0% {
+          content: ".";
         }
-        .stat-item {
-          padding: 6px 10px;
-          font-size: 0.75em;
+        33% {
+          content: "..";
         }
-        .top-right-about {
-          top: 10px;
-          right: 10px;
-          padding: 6px 10px;
-          font-size: 0.75em;
+        66% {
+          content: "...";
+        }
+        100% {
+          content: "";
+        }
+      }
+
+      /* ─── SCROLLBAR ──────────────────────── */
+      .overlay {
+        scrollbar-width: thin;
+        scrollbar-color: var(--border) transparent;
+      }
+
+      /* ─── RESPONSIVE ─────────────────────── */
+      @media (max-width: 640px) {
+        .top-bar {
+          padding: 10px 14px;
+        }
+        .stat-pill {
+          padding: 4px 8px;
+          font-size: 0.68rem;
+        }
+        .about-btn {
+          padding: 4px 10px;
+          font-size: 0.68rem;
         }
         .chat-box {
-          margin-top: 60px;
-          padding: 10px 15px;
-          gap: 15px;
+          padding: 14px;
+          margin-top: 52px;
+          gap: 14px;
         }
-        .gradient-text {
-          font-size: 2.8em;
-        }
-        .sub-greeting {
-          font-size: 1.1em;
-          margin-top: 5px;
-        }
-        .message {
-          font-size: 1.1em;
-          max-width: 90%;
-        }
-        .suggestions-container {
-          padding: 10px 0;
-          gap: 8px;
-        }
-        .suggestion-chip {
-          padding: 10px 15px;
-          font-size: 0.85em;
+        .hero-title {
+          font-size: 2.6rem;
         }
         .bottom-section {
-          padding-bottom: 15px;
+          padding: 0 12px 16px;
         }
         .input-wrapper {
-          padding: 5px 5px 5px 15px;
-          height: 55px;
-          gap: 10px;
+          padding: 0 5px 0 14px;
         }
         input[type="text"] {
-          font-size: 1.1em;
+          font-size: 0.85rem;
         }
-        .input-wrapper .send-btn {
-          width: 44px !important;
-          min-width: 44px !important;
-          max-width: 44px !important;
-          height: 44px !important;
-          padding: 0 !important;
-          border-radius: 50% !important;
-          flex-shrink: 0;
-        }
-        .send-text {
+        .send-btn .send-txt {
           display: none;
         }
-        .input-wrapper .send-btn span:last-child {
-          font-size: 1.5em !important;
-          margin-top: -2px;
-          margin-left: 0;
+        .send-btn {
+          padding: 9px 14px;
         }
-        .outside-reveal-btn {
-          height: 55px;
-          padding: 0 15px;
-          font-size: 0.95em;
+        .message {
+          font-size: 0.88rem;
+          max-width: 90%;
+        }
+        .big-display {
+          font-size: clamp(2.4rem, 10vw, 4rem);
+        }
+        .color-word-big {
+          font-size: clamp(3rem, 14vw, 5.5rem);
+        }
+        .game-menu-card {
+          padding: 18px 20px;
         }
         .action-bar {
-          display: flex;
-          gap: 10px;
-          margin-top: 15px;
-          justify-content: center;
-          width: 100%;
-          flex-wrap: wrap;
-          scrollbar-width: none;
-          -webkit-overflow-scrolling: touch;
-        }
-        .action-bar::-webkit-scrollbar {
-          display: none;
+          gap: 6px;
         }
         .action-btn {
-          white-space: nowrap;
-          padding: 10px 18px;
-          font-size: 0.9em;
-        }
-        .close-game-btn {
-          top: 10px;
-          right: 15px;
-          font-size: 40px;
-        }
-        .game-card {
-          padding: 20px 10px;
-        }
-        .game-title {
-          font-size: 2.4em !important;
-          margin-bottom: 20px;
-        }
-        #scrambled-word {
-          font-size: 2.5em;
-          letter-spacing: 2px;
-        }
-        #math-equation {
-          font-size: 3.5em;
-          margin: 20px 0;
-        }
-        #color-word {
-          font-size: 4em;
-          margin: 20px 0;
-        }
-        .game-input-box {
-          height: 55px;
-          font-size: 1.2em;
-          padding: 10px;
-        }
-        .hint-text {
-          font-size: 1em;
-        }
-        .btn-row {
-          flex-direction: column;
-          gap: 10px;
-        }
-        .btn-row .reveal-btn,
-        .btn-row .send-btn {
-          width: 100%;
-          height: 50px;
-          font-size: 1.1em !important;
-          border-radius: 25px;
-        }
-        .modal-card {
-          padding: 25px;
+          padding: 7px 12px;
+          font-size: 0.72rem;
         }
       }
     </style>
   </head>
   <body>
     <div class="chat-container">
-      <button class="top-right-about" onclick="toggleAbout()">About Us</button>
-
-      <div class="stats-dashboard">
-        <div class="stat-item">🔥 <span id="streak-count">0</span> Days</div>
-        <div class="stat-item">🧩 <span id="riddle-count">0</span> Solved</div>
-        <div class="stat-item">⏱️ <span id="time-spent">0</span>m Active</div>
+      <!-- TOP BAR -->
+      <div class="top-bar">
+        <div class="stats-row">
+          <div class="stat-pill">
+            🔥 <span class="val" id="streak-count">0</span> days
+          </div>
+          <div class="stat-pill">
+            🧩 <span class="val" id="riddle-count">0</span> solved
+          </div>
+          <div class="stat-pill">
+            ⏱ <span class="val" id="time-spent">0</span>m
+          </div>
+        </div>
+        <button class="about-btn" onclick="toggleAbout()">About</button>
       </div>
 
+      <!-- CHAT BOX -->
       <div class="chat-box" id="chat-box">
         <div class="chat-header" id="hero-area">
-          <span class="gradient-text">Think First.</span>
-          <div class="sub-greeting" id="sub-greeting">
-            Loading inspiration...
-          </div>
+          <div class="hero-title">Think First<span class="dot">.</span></div>
+          <div class="hero-sub" id="sub-greeting">Loading inspiration...</div>
           <div class="suggestions-container" id="suggestions"></div>
         </div>
       </div>
 
+      <!-- BOTTOM SECTION -->
       <div class="bottom-section">
-        <div class="bottom-area-row">
+        <div class="input-row">
           <div class="input-wrapper">
             <input
               type="text"
               id="user-input"
-              placeholder="Ask me anything..."
+              placeholder="Ask me anything…"
               onkeypress="handleKeyPress(event)"
               autocomplete="off"
             />
             <button class="send-btn" onclick="sendMessage()">
-              <span class="send-text">Send</span>
-              <span style="font-size: 1.2em">↑</span>
+              <span class="send-txt">Send</span>
+              <span>↑</span>
             </button>
           </div>
-
           <button
-            class="outside-reveal-btn"
+            class="reveal-btn-outer"
             onclick="handleGlobalReveal()"
             title="Reveal Answer"
           >
             👀 Reveal
           </button>
         </div>
-
         <div class="action-bar">
-          <button class="action-btn" onclick="toggleGame()">
-            🧠 Brain Training
+          <button class="action-btn" onclick="openGameOverlay()">
+            🧠 Train
           </button>
-          <button class="action-btn" onclick="startQuiz()">📝 Quiz Me</button>
+          <button class="action-btn" onclick="startQuiz()">📝 Quiz</button>
           <button class="action-btn" onclick="startRiddle()">🎲 Riddle</button>
         </div>
       </div>
+    </div>
 
-      <div class="game-overlay" id="game-overlay">
-        <button class="close-game-btn" onclick="toggleGame()">&times;</button>
-
-        <div class="game-card">
-          <div id="game-menu-view" class="view-container">
-            <h1 class="gradient-text game-title">Select Training</h1>
-            <button
-              class="action-btn"
-              style="
-                width: 100%;
-                max-width: 400px;
-                padding: 15px;
-                margin-bottom: 15px;
-                font-size: 1.1em;
-              "
-              onclick="openGame('scramble')"
-            >
-              🔠 Word Scramble</button
-            ><br />
-            <button
-              class="action-btn"
-              style="
-                width: 100%;
-                max-width: 400px;
-                padding: 15px;
-                margin-bottom: 15px;
-                font-size: 1.1em;
-              "
-              onclick="openGame('math')"
-            >
-              🔢 Math Sprint</button
-            ><br />
-            <button
-              class="action-btn"
-              style="
-                width: 100%;
-                max-width: 400px;
-                padding: 15px;
-                font-size: 1.1em;
-              "
-              onclick="openGame('color')"
-            >
-              🎨 Color Clash
-            </button>
-          </div>
-
-          <div
-            id="game-scramble-view"
-            class="view-container"
-            style="display: none"
-          >
-            <button class="back-btn" onclick="openGame('menu')">
-              ← Back to Menu
-            </button>
-            <h1 class="gradient-text game-title">Word Scramble</h1>
-            <div class="diff-container">
-              <button
-                class="diff-btn scramble-diff"
-                id="scramble-easy"
-                onclick="setScrambleDifficulty('easy')"
-              >
-                Easy
-              </button>
-              <button
-                class="diff-btn scramble-diff active"
-                id="scramble-medium"
-                onclick="setScrambleDifficulty('medium')"
-              >
-                Medium
-              </button>
-              <button
-                class="diff-btn scramble-diff"
-                id="scramble-hard"
-                onclick="setScrambleDifficulty('hard')"
-              >
-                Hard
-              </button>
+    <!-- ═══════════════════════════════════════════════
+     GAME OVERLAY
+════════════════════════════════════════════════ -->
+    <div class="overlay" id="game-overlay">
+      <button class="overlay-close" onclick="closeGameOverlay()">
+        &times;
+      </button>
+      <div class="game-wrap">
+        <!-- MENU -->
+        <div class="game-view active" id="view-menu">
+          <div class="game-menu-grid">
+            <div class="game-menu-card" onclick="openGame('scramble')">
+              <div class="card-icon">🔠</div>
+              <div class="card-info">
+                <div class="card-title">Word Scramble</div>
+                <div class="card-desc">
+                  Beat the clock — unscramble before time runs out
+                </div>
+              </div>
+              <div class="card-badge">Timer</div>
             </div>
-            <div id="scrambled-word"></div>
-            <div id="scramble-hint" class="hint-text"></div>
-            <input
-              type="text"
-              id="scramble-input"
-              class="game-input-box"
-              placeholder="Your Answer..."
-              autocomplete="off"
-              onkeypress="handleScrambleKeyPress(event)"
-            />
-            <div
-              id="scramble-message"
-              style="
-                margin-bottom: 20px;
-                font-weight: bold;
-                font-size: 1.2em;
-                min-height: 25px;
-              "
-            ></div>
-            <div class="btn-row">
-              <button
-                class="reveal-btn"
-                id="scramble-reveal-btn"
-                onclick="revealScramble()"
-              >
-                Reveal
-              </button>
-              <button
-                class="send-btn"
-                id="scramble-check-btn"
-                style="flex-grow: 1; justify-content: center; font-size: 1.2em"
-                onclick="checkScrambleAnswer()"
-              >
-                Check
-              </button>
+            <div class="game-menu-card" onclick="openGame('math')">
+              <div class="card-icon">🔢</div>
+              <div class="card-info">
+                <div class="card-title">Math Sprint</div>
+                <div class="card-desc">
+                  Speed math — build combos, chase high scores
+                </div>
+              </div>
+              <div class="card-badge">Combo</div>
             </div>
-          </div>
-
-          <div id="game-math-view" class="view-container" style="display: none">
-            <button class="back-btn" onclick="openGame('menu')">
-              ← Back to Menu
-            </button>
-            <h1 class="gradient-text game-title">Math Sprint</h1>
-            <div class="diff-container">
-              <button
-                class="diff-btn math-diff"
-                id="math-easy"
-                onclick="setMathDifficulty('easy')"
-              >
-                Easy
-              </button>
-              <button
-                class="diff-btn math-diff active"
-                id="math-medium"
-                onclick="setMathDifficulty('medium')"
-              >
-                Medium
-              </button>
-              <button
-                class="diff-btn math-diff"
-                id="math-hard"
-                onclick="setMathDifficulty('hard')"
-              >
-                Hard
-              </button>
-            </div>
-            <div id="math-equation"></div>
-            <input
-              type="number"
-              id="math-input"
-              class="game-input-box"
-              placeholder="Your Answer..."
-              autocomplete="off"
-              onkeypress="handleMathKeyPress(event)"
-            />
-            <div
-              id="math-message"
-              style="
-                margin-bottom: 20px;
-                font-weight: bold;
-                font-size: 1.2em;
-                min-height: 25px;
-              "
-            ></div>
-            <div class="btn-row">
-              <button class="reveal-btn" onclick="revealMath()">Reveal</button>
-              <button
-                class="send-btn"
-                style="flex-grow: 1; justify-content: center; font-size: 1.2em"
-                onclick="checkMathAnswer()"
-              >
-                Submit
-              </button>
-            </div>
-          </div>
-
-          <div
-            id="game-color-view"
-            class="view-container"
-            style="display: none"
-          >
-            <button class="back-btn" onclick="openGame('menu')">
-              ← Back to Menu
-            </button>
-            <h1 class="gradient-text game-title">Color Clash</h1>
-            <p style="color: #cbd5e1; font-size: 1.1em">
-              Does the text match its color?
-            </p>
-            <div id="color-word">RED</div>
-            <div
-              id="color-message"
-              style="
-                margin-bottom: 20px;
-                font-weight: bold;
-                font-size: 1.2em;
-                min-height: 25px;
-              "
-            ></div>
-            <div class="btn-row">
-              <button
-                class="send-btn"
-                style="
-                  flex-grow: 1;
-                  justify-content: center;
-                  background: transparent;
-                  border: 1px solid #f43f5e;
-                  color: #f43f5e;
-                  font-size: 1.2em;
-                "
-                onclick="checkColorAnswer(false)"
-              >
-                No (Mismatch)
-              </button>
-              <button
-                class="send-btn"
-                style="
-                  flex-grow: 1;
-                  justify-content: center;
-                  background: transparent;
-                  border: 1px solid #38bdf8;
-                  color: #38bdf8;
-                  font-size: 1.2em;
-                "
-                onclick="checkColorAnswer(true)"
-              >
-                Yes (Match)
-              </button>
+            <div class="game-menu-card" onclick="openGame('color')">
+              <div class="card-icon">🎨</div>
+              <div class="card-info">
+                <div class="card-title">Color Clash</div>
+                <div class="card-desc">
+                  3 lives — how long can you survive the trick?
+                </div>
+              </div>
+              <div class="card-badge">Lives</div>
             </div>
           </div>
         </div>
-      </div>
 
+        <!-- SCRAMBLE -->
+        <div class="game-view" id="view-scramble">
+          <div class="game-header">
+            <button class="back-link" onclick="openGame('menu')">← menu</button>
+            <div class="game-title-small">Word Scramble</div>
+            <div class="score-display">
+              <div class="score-item streak-col">
+                <span class="score-val" id="scr-streak">0</span>streak
+              </div>
+              <div class="score-item">
+                <span class="score-val" id="scr-score">0</span>score
+              </div>
+            </div>
+          </div>
+          <div class="diff-row">
+            <button
+              class="diff-tab"
+              id="scr-diff-easy"
+              onclick="setScrambleDiff('easy')"
+            >
+              Easy
+            </button>
+            <button
+              class="diff-tab active"
+              id="scr-diff-medium"
+              onclick="setScrambleDiff('medium')"
+            >
+              Medium
+            </button>
+            <button
+              class="diff-tab"
+              id="scr-diff-hard"
+              onclick="setScrambleDiff('hard')"
+            >
+              Hard
+            </button>
+          </div>
+          <div class="timer-bar-wrap">
+            <div class="timer-bar" id="scr-timer-bar"></div>
+          </div>
+          <div class="big-display mono" id="scr-word">LOADING</div>
+          <div class="hint-box loading" id="scr-hint">
+            Generating your word…
+          </div>
+          <div class="combo-banner"><span id="scr-combo"></span></div>
+          <input
+            type="text"
+            class="game-input"
+            id="scr-input"
+            placeholder="Type your answer…"
+            autocomplete="off"
+            onkeypress="if (event.key === 'Enter') checkScramble();"
+          />
+          <div class="game-btn-row">
+            <button class="game-btn secondary" onclick="revealScramble()">
+              Reveal
+            </button>
+            <button class="game-btn primary" onclick="checkScramble()">
+              Check →
+            </button>
+          </div>
+        </div>
+
+        <!-- MATH -->
+        <div class="game-view" id="view-math">
+          <div class="game-header">
+            <button class="back-link" onclick="openGame('menu')">← menu</button>
+            <div class="game-title-small">Math Sprint</div>
+            <div class="score-display">
+              <div class="score-item streak-col">
+                <span class="score-val" id="math-combo">x1</span>combo
+              </div>
+              <div class="score-item">
+                <span class="score-val" id="math-score">0</span>score
+              </div>
+            </div>
+          </div>
+          <div class="diff-row">
+            <button
+              class="diff-tab"
+              id="math-diff-easy"
+              onclick="setMathDiff('easy')"
+            >
+              Easy
+            </button>
+            <button
+              class="diff-tab active"
+              id="math-diff-medium"
+              onclick="setMathDiff('medium')"
+            >
+              Medium
+            </button>
+            <button
+              class="diff-tab"
+              id="math-diff-hard"
+              onclick="setMathDiff('hard')"
+            >
+              Hard
+            </button>
+          </div>
+          <div class="timer-bar-wrap">
+            <div class="timer-bar" id="math-timer-bar"></div>
+          </div>
+          <div class="big-display" id="math-eq">3 + 4</div>
+          <div class="combo-banner"><span id="math-combo-msg"></span></div>
+          <input
+            type="number"
+            class="game-input"
+            id="math-input"
+            placeholder="Answer…"
+            autocomplete="off"
+            onkeypress="if (event.key === 'Enter') checkMath();"
+          />
+          <div class="game-btn-row">
+            <button class="game-btn secondary" onclick="revealMath()">
+              Reveal
+            </button>
+            <button class="game-btn primary" onclick="checkMath()">
+              Submit →
+            </button>
+          </div>
+        </div>
+
+        <!-- COLOR CLASH -->
+        <div class="game-view" id="view-color">
+          <div class="game-header">
+            <button class="back-link" onclick="openGame('menu')">← menu</button>
+            <div class="game-title-small">Color Clash</div>
+            <div class="score-display">
+              <div class="score-item">
+                <span class="score-val" id="col-score">0</span>score
+              </div>
+            </div>
+          </div>
+          <div class="timer-bar-wrap">
+            <div class="timer-bar" id="col-timer-bar"></div>
+          </div>
+          <div class="lives-row" id="col-lives"></div>
+          <p
+            style="
+              text-align: center;
+              font-size: 0.75rem;
+              color: var(--text-dim);
+              letter-spacing: 0.08em;
+              margin-bottom: 4px;
+              text-transform: uppercase;
+            "
+          >
+            Does the text match its ink color?
+          </p>
+          <div class="color-word-big" id="col-word">RED</div>
+          <div class="combo-banner"><span id="col-combo"></span></div>
+          <div class="color-btn-row">
+            <button class="color-btn mismatch" onclick="answerColor(false)">
+              ✗ Mismatch
+            </button>
+            <button class="color-btn match" onclick="answerColor(true)">
+              ✓ Match
+            </button>
+          </div>
+
+          <!-- game-over panel inside color view -->
+          <div class="game-over-panel" id="col-gameover">
+            <div class="game-over-title">Game Over</div>
+            <div class="final-score-box">
+              <div class="fs-label">Final Score</div>
+              <div class="fs-val" id="col-final-score">0</div>
+              <div class="fs-hi" id="col-hi-score"></div>
+            </div>
+            <button
+              class="game-btn primary"
+              style="width: 100%; margin-top: 4px"
+              onclick="startColorGame()"
+            >
+              Play Again →
+            </button>
+            <br /><br />
+            <button class="back-link" onclick="openGame('menu')">
+              ← back to menu
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- .game-wrap -->
+    </div>
+    <!-- #game-overlay -->
+
+    <!-- ═══════════════════════════════════════════════
+     ABOUT OVERLAY
+════════════════════════════════════════════════ -->
+    <div class="overlay" id="about-overlay">
+      <button class="overlay-close" onclick="toggleAbout()">&times;</button>
       <div
-        class="game-overlay"
-        id="about-overlay"
-        style="background: rgba(2, 6, 23, 0.85); backdrop-filter: blur(15px)"
+        style="
+          flex: 1;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          width: 100%;
+        "
       >
-        <button class="close-game-btn" onclick="toggleAbout()">&times;</button>
-        <div class="modal-card">
-          <h2 style="margin-bottom: 15px; color: #38bdf8">About Think First</h2>
-          <p style="line-height: 1.6; color: #cbd5e1; margin-bottom: 20px">
+        <div class="about-card">
+          <h2>Think First</h2>
+          <p>
             A hobby project built to challenge your curiosity and sharpen your
-            mind.
+            mind. Ask anything, play games, train your brain.
           </p>
-          <p style="font-size: 0.9em; color: #94a3b8; margin-bottom: 10px">
-            Developed by:
-          </p>
-          <h3 style="color: #fff">Prashant Singh Suriya</h3>
-          <h3 style="color: #fff; margin-bottom: 20px">Nitish Tomar</h3>
-          <p style="font-size: 0.8em; color: #38bdf8">
-            v16.0 • Expanded Knowledge Base
-          </p>
+          <div class="dev-name">Prashant Singh Suriya<br />Nitish Tomar</div>
+          <div class="version">v17.0 · Monochrome Edition</div>
         </div>
       </div>
     </div>
 
     <script>
+      /* ════════════════════════════════════════
+   GLOBAL STATE
+════════════════════════════════════════ */
       const chatBox = document.getElementById("chat-box");
       const userInput = document.getElementById("user-input");
       const heroArea = document.getElementById("hero-area");
-      const suggestionsBox = document.getElementById("suggestions");
-      let isFirstMessage = true;
 
-      let chatMode = "normal"; // 'normal', 'quiz', 'riddle'
+      let isFirstMessage = true;
+      let chatMode = "normal"; // 'normal' | 'quiz' | 'riddle'
       let currentChallengeAnswer = "";
 
-      const motivationalLines = [
-        "Your brain called, it wants a challenge.",
-        "Fuel your curiosity.",
-        "Learn something new today.",
-        "Train your mind to see the good in everything.",
-        "Small steps every day.",
-        "Expand your horizons.",
-        "Challenge yourself, you'll be surprised.",
-        "Knowledge is your superpower.",
-        "Stay curious, keep learning.",
-        "A workout for your intellect.",
-      ];
-
-      function setRandomGreeting() {
-        const greetingEl = document.getElementById("sub-greeting");
-        const randomLine =
-          motivationalLines[
-            Math.floor(Math.random() * motivationalLines.length)
-          ];
-        greetingEl.innerText = randomLine;
-      }
-
+      /* ─── STATS ─────────────────────────── */
       let solvedCount = parseInt(localStorage.getItem("solvedCount")) || 0;
       let totalMinutes = parseInt(localStorage.getItem("totalMinutes")) || 0;
       let streakCount = parseInt(localStorage.getItem("streakCount")) || 0;
 
       function checkDailyStreak() {
         const today = new Date().toDateString();
-        const lastLoginDate = localStorage.getItem("lastLoginDate");
-        if (lastLoginDate !== today) {
-          if (lastLoginDate) {
-            const diffDays = Math.ceil(
-              Math.abs(new Date(today) - new Date(lastLoginDate)) /
-                (1000 * 60 * 60 * 24),
+        const last = localStorage.getItem("lastLoginDate");
+        if (last !== today) {
+          if (last) {
+            const diff = Math.ceil(
+              Math.abs(new Date(today) - new Date(last)) / 86400000,
             );
-            if (diffDays === 1) streakCount++;
-            else if (diffDays > 1) streakCount = 1;
+            streakCount = diff === 1 ? streakCount + 1 : 1;
           } else {
             streakCount = 1;
           }
@@ -1125,106 +1304,62 @@
         }
       }
 
-      function updateStatsDisplay() {
-        document.getElementById("riddle-count").innerText = solvedCount;
-        document.getElementById("time-spent").innerText = totalMinutes;
-        document.getElementById("streak-count").innerText = streakCount;
+      function updateStats() {
+        document.getElementById("riddle-count").textContent = solvedCount;
+        document.getElementById("time-spent").textContent = totalMinutes;
+        document.getElementById("streak-count").textContent = streakCount;
+      }
+
+      function incrementSolved() {
+        solvedCount++;
+        localStorage.setItem("solvedCount", solvedCount);
+        updateStats();
       }
 
       setInterval(() => {
         totalMinutes++;
         localStorage.setItem("totalMinutes", totalMinutes);
-        updateStatsDisplay();
+        updateStats();
       }, 60000);
 
-      function incrementSolved() {
-        solvedCount++;
-        localStorage.setItem("solvedCount", solvedCount);
-        updateStatsDisplay();
-      }
-
-      // 100 Suggestions Base
+      /* ─── SUGGESTIONS ───────────────────── */
       const allSuggestions = [
         {
           query: "How do airplanes stay in the air?",
           icon: "✈️",
-          label: "The Science of Flight",
+          label: "Science of Flight",
         },
         {
           query: "Explain quantum physics to a kid",
           icon: "⚛️",
-          label: "Quantum Physics Simplified",
+          label: "Quantum Physics",
         },
-        {
-          query: "Tell me a dinosaur fact",
-          icon: "🦖",
-          label: "Fascinating Dino Facts",
-        },
-        {
-          query: "Explain black holes",
-          icon: "🌌",
-          label: "Mysteries of Black Holes",
-        },
-        {
-          query: "How do magnets work?",
-          icon: "🧲",
-          label: "The Magic of Magnets",
-        },
-        {
-          query: "What is string theory?",
-          icon: "🧶",
-          label: "Unraveling String Theory",
-        },
-        {
-          query: "Why does ice float?",
-          icon: "🧊",
-          label: "The Physics of Ice",
-        },
+        { query: "Tell me a dinosaur fact", icon: "🦖", label: "Dino Facts" },
+        { query: "Explain black holes", icon: "🌌", label: "Black Holes" },
+        { query: "How do magnets work?", icon: "🧲", label: "Magnets" },
+        { query: "Why does ice float?", icon: "🧊", label: "Physics of Ice" },
         {
           query: "How do vaccines work?",
           icon: "💉",
           label: "How Immunity Works",
         },
-        {
-          query: "Explain relativity simply",
-          icon: "⏱️",
-          label: "Einstein's Relativity",
-        },
-        {
-          query: "How do lasers work?",
-          icon: "🔦",
-          label: "The Power of Lasers",
-        },
-        { query: "What is DNA?", icon: "🧬", label: "The Secrets of DNA" },
-        {
-          query: "Why is the ocean salty?",
-          icon: "🌊",
-          label: "Why Oceans are Salty",
-        },
+        { query: "What is DNA?", icon: "🧬", label: "DNA Secrets" },
+        { query: "Why is the ocean salty?", icon: "🌊", label: "Salty Oceans" },
         {
           query: "How do volcanoes erupt?",
           icon: "🌋",
-          label: "Inside a Volcano",
+          label: "Volcano Eruptions",
         },
-        {
-          query: "What is dark matter?",
-          icon: "🌑",
-          label: "Hunting for Dark Matter",
-        },
+        { query: "What is dark matter?", icon: "🌑", label: "Dark Matter" },
         {
           query: "Who built the pyramids?",
           icon: "🏜️",
-          label: "Building the Pyramids",
+          label: "Building Pyramids",
         },
         {
           query: "Tell me about the Roman Empire",
           icon: "🏛️",
           label: "Rise of Rome",
-        },
-        {
-          query: "When was the printing press invented?",
-          icon: "📚",
-          label: "History of Printing",
         },
         {
           query: "History of the internet",
@@ -1234,68 +1369,13 @@
         {
           query: "Who was Nikola Tesla?",
           icon: "⚡",
-          label: "The Genius of Tesla",
+          label: "Genius of Tesla",
         },
-        { query: "What started WW1?", icon: "🌍", label: "The Spark of WW1" },
-        {
-          query: "Tell me a samurai fact",
-          icon: "⚔️",
-          label: "Legend of the Samurai",
-        },
-        {
-          query: "History of chocolate",
-          icon: "🍫",
-          label: "The Story of Chocolate",
-        },
-        {
-          query: "Who discovered electricity?",
-          icon: "💡",
-          label: "Discovering Electricity",
-        },
-        {
-          query: "How do bees make honey?",
-          icon: "🐝",
-          label: "How Bees Make Honey",
-        },
+        { query: "How do bees make honey?", icon: "🐝", label: "Bee Honey" },
         {
           query: "Why do leaves change color?",
           icon: "🍁",
-          label: "The Colors of Autumn",
-        },
-        {
-          query: "Tell me an octopus fact",
-          icon: "🐙",
-          label: "Amazing Octopus Facts",
-        },
-        {
-          query: "How deep is the ocean?",
-          icon: "⚓",
-          label: "Depths of the Ocean",
-        },
-        {
-          query: "How do bats fly in the dark?",
-          icon: "🦇",
-          label: "How Echolocation Works",
-        },
-        {
-          query: "Why do cats sleep so much?",
-          icon: "🐈",
-          label: "The Science of Cat Naps",
-        },
-        {
-          query: "What is the largest animal?",
-          icon: "🐋",
-          label: "Giants of the Sea",
-        },
-        {
-          query: "How do chameleons change color?",
-          icon: "🦎",
-          label: "Chameleon Camouflage",
-        },
-        {
-          query: "Do trees communicate?",
-          icon: "🌳",
-          label: "How Forests Talk",
+          label: "Autumn Colors",
         },
         { query: "What is an API?", icon: "⚙️", label: "Understanding APIs" },
         {
@@ -1303,152 +1383,35 @@
           icon: "🤖",
           label: "Basics of AI",
         },
-        {
-          query: "How does Wi-Fi work?",
-          icon: "📶",
-          label: "The Invisible Web",
-        },
-        {
-          query: "What is a blockchain?",
-          icon: "⛓️",
-          label: "Blockchain Explained",
-        },
-        {
-          query: "How do CPUs work?",
-          icon: "🖩",
-          label: "The Brain of a Computer",
-        },
-        {
-          query: "What is cloud computing?",
-          icon: "☁️",
-          label: "Living in the Cloud",
-        },
-        {
-          query: "Explain binary code",
-          icon: "0️⃣",
-          label: "Language of 1s and 0s",
-        },
-        {
-          query: "How do touchscreens work?",
-          icon: "📱",
-          label: "Touchscreen Tech",
-        },
-        {
-          query: "What is open source?",
-          icon: "🔓",
-          label: "Open Source Movement",
-        },
-        {
-          query: "Why do we dream?",
-          icon: "💭",
-          label: "The Purpose of Dreams",
-        },
-        { query: "How is glass made?", icon: "🪟", label: "Creation of Glass" },
-        {
-          query: "What makes popcorn pop?",
-          icon: "🍿",
-          label: "Science of Popcorn",
-        },
-        {
-          query: "Why is the sky blue?",
-          icon: "🌤️",
-          label: "Colors of the Atmosphere",
-        },
-        {
-          query: "How does soap clean?",
-          icon: "🧼",
-          label: "Chemistry of Cleaning",
-        },
+        { query: "How does Wi-Fi work?", icon: "📶", label: "Invisible Web" },
+        { query: "What is blockchain?", icon: "⛓️", label: "Blockchain" },
+        { query: "Why is the sky blue?", icon: "🌤️", label: "Sky Color" },
         {
           query: "What causes rainbows?",
           icon: "🌈",
-          label: "The Magic of Optics",
+          label: "Optics of Rainbows",
         },
-        {
-          query: "How do mirrors work?",
-          icon: "🪞",
-          label: "Physics of Reflection",
-        },
-        { query: "Why do we yawn?", icon: "🥱", label: "Biology of Yawning" },
-        {
-          query: "How does a compass work?",
-          icon: "🧭",
-          label: "Navigating the Earth",
-        },
-        {
-          query: "How do submarines work?",
-          icon: "⛴️",
-          label: "Submarine Navigation",
-        },
-        {
-          query: "What is the speed of light?",
-          icon: "⚡",
-          label: "Speed of Light",
-        },
+        { query: "Why do we dream?", icon: "💭", label: "Purpose of Dreams" },
+        { query: "How does GPS work?", icon: "🛰️", label: "How GPS Works" },
+        { query: "What is photosynthesis?", icon: "🌱", label: "Plant Energy" },
         {
           query: "Explain the Fermi Paradox",
           icon: "👽",
           label: "Fermi Paradox",
         },
         {
-          query: "How do solar panels work?",
-          icon: "☀️",
-          label: "Solar Energy",
+          query: "What are tectonic plates?",
+          icon: "🗺️",
+          label: "Tectonic Plates",
         },
+        { query: "Why do we get goosebumps?", icon: "🥶", label: "Goosebumps" },
         {
-          query: "What are black holes made of?",
+          query: "What causes the Northern Lights?",
           icon: "🌌",
-          label: "Inside Black Holes",
+          label: "Aurora",
         },
-        {
-          query: "How does GPS work?",
-          icon: "🛰️",
-          label: "Global Positioning System",
-        },
-        { query: "What is photosynthesis?", icon: "🌱", label: "Plant Energy" },
-        {
-          query: "How do fireflies glow?",
-          icon: "✨",
-          label: "Bioluminescence",
-        },
-        {
-          query: "Why do zebras have stripes?",
-          icon: "🦓",
-          label: "Zebra Stripes",
-        },
-        {
-          query: "History of the Olympic Games",
-          icon: "🏅",
-          label: "Olympic History",
-        },
-        {
-          query: "Who painted the Mona Lisa?",
-          icon: "🎨",
-          label: "Mona Lisa Secrets",
-        },
-        {
-          query: "What causes earthquakes?",
-          icon: "🌍",
-          label: "Earthquakes Explained",
-        },
-        { query: "How are tornadoes formed?", icon: "🌪️", label: "Tornadoes" },
-        {
-          query: "Explain the Fibonacci sequence",
-          icon: "🔢",
-          label: "Fibonacci Math",
-        },
-        {
-          query: "What is the Golden Ratio?",
-          icon: "📐",
-          label: "The Golden Ratio",
-        },
-        {
-          query: "How does the human eye work?",
-          icon: "👁️",
-          label: "Human Vision",
-        },
-        { query: "What are stem cells?", icon: "🧫", label: "Stem Cells" },
-        { query: "How do antibiotics work?", icon: "💊", label: "Antibiotics" },
+        { query: "How do muscles grow?", icon: "💪", label: "Muscle Growth" },
+        { query: "What is antimatter?", icon: "⚛️", label: "Antimatter" },
         {
           query: "Explain the theory of evolution",
           icon: "🐒",
@@ -1460,148 +1423,85 @@
           label: "Placebo Effect",
         },
         {
-          query: "How do helicopters fly?",
-          icon: "🚁",
-          label: "Helicopter Flight",
+          query: "How does the human eye work?",
+          icon: "👁️",
+          label: "Human Vision",
         },
         {
-          query: "What makes a diamond so hard?",
-          icon: "💎",
-          label: "Diamond Structure",
-        },
-        { query: "How is paper made?", icon: "📄", label: "Paper Making" },
-        {
-          query: "Explain how batteries work",
-          icon: "🔋",
-          label: "Battery Chemistry",
-        },
-        {
-          query: "What is the Mariana Trench?",
-          icon: "🌊",
-          label: "Deepest Ocean",
-        },
-        {
-          query: "How do spiders spin webs?",
-          icon: "🕸️",
-          label: "Spider Webs",
-        },
-        { query: "Why is Mars red?", icon: "🔴", label: "The Red Planet" },
-        { query: "What are exoplanets?", icon: "🪐", label: "Exoplanets" },
-        {
-          query: "How does a microwave oven work?",
-          icon: "🍲",
-          label: "Microwaves",
-        },
-        { query: "What is the ozone layer?", icon: "🛡️", label: "Ozone Layer" },
-        {
-          query: "How do penguins survive the cold?",
-          icon: "🐧",
-          label: "Penguin Survival",
-        },
-        {
-          query: "Why do we get goosebumps?",
-          icon: "🥶",
-          label: "Goosebumps Explained",
-        },
-        {
-          query: "What causes the Northern Lights?",
-          icon: "🌌",
-          label: "Auroras",
-        },
-        {
-          query: "How do trains stay on tracks?",
-          icon: "🚂",
-          label: "Train Physics",
-        },
-        {
-          query: "What is the difference between a virus and bacteria?",
-          icon: "🦠",
-          label: "Virus vs Bacteria",
-        },
-        { query: "How do muscles grow?", icon: "💪", label: "Muscle Growth" },
-        { query: "Explain the water cycle", icon: "💧", label: "Water Cycle" },
-        {
-          query: "What are tectonic plates?",
-          icon: "🗺️",
-          label: "Tectonic Plates",
+          query: "What caused the dinosaurs to go extinct?",
+          icon: "☄️",
+          label: "Dino Extinction",
         },
         { query: "How does anesthesia work?", icon: "🛏️", label: "Anesthesia" },
-        {
-          query: "What is the history of tea?",
-          icon: "🍵",
-          label: "History of Tea",
-        },
-        {
-          query: "How did the dinosaurs go extinct?",
-          icon: "☄️",
-          label: "Dinosaur Extinction",
-        },
-        { query: "What are coral reefs?", icon: "🪸", label: "Coral Reefs" },
-        {
-          query: "How do memory foams work?",
-          icon: "🛏️",
-          label: "Memory Foam",
-        },
-        { query: "What is antimatter?", icon: "⚛️", label: "Antimatter" },
-        {
-          query: "How do rockets steer in space?",
-          icon: "🚀",
-          label: "Rocket Navigation",
-        },
-        {
-          query: "Explain the concept of infinity",
-          icon: "♾️",
-          label: "Infinity Concept",
-        },
         { query: "What is absolute zero?", icon: "🌡️", label: "Absolute Zero" },
         {
-          query: "How do musical instruments make sound?",
-          icon: "🎸",
-          label: "Acoustics",
+          query: "Explain the Fibonacci sequence",
+          icon: "🔢",
+          label: "Fibonacci",
         },
-        { query: "What causes a tsunami?", icon: "🌊", label: "Tsunamis" },
         {
-          query: "Why do some people have blue eyes?",
-          icon: "👁️",
-          label: "Eye Color Genetics",
+          query: "What is the speed of light?",
+          icon: "⚡",
+          label: "Speed of Light",
         },
       ];
 
       function loadRandomSuggestions() {
-        // CHANGED: Now pulls exactly 6 items from the expanded 100-item array!
-        const shuffled = allSuggestions
+        const shuffled = [...allSuggestions]
           .sort(() => 0.5 - Math.random())
           .slice(0, 6);
-        suggestionsBox.innerHTML = "";
+        const box = document.getElementById("suggestions");
+        box.innerHTML = "";
         shuffled.forEach((item) => {
           const btn = document.createElement("button");
           btn.className = "suggestion-chip";
           btn.onclick = () => useSuggestion(item.query);
-          btn.innerHTML = `${item.icon} ${item.label}`;
-          suggestionsBox.appendChild(btn);
+          btn.textContent = `${item.icon} ${item.label}`;
+          box.appendChild(btn);
         });
       }
 
+      /* ─── CHAT ──────────────────────────── */
+      const motivationalLines = [
+        "Your brain called — it wants a challenge.",
+        "Fuel your curiosity.",
+        "Learn something new today.",
+        "Small steps. Compounding results.",
+        "Expand your horizons.",
+        "Challenge yourself — you'll be surprised.",
+        "Knowledge is your superpower.",
+        "Stay curious. Keep learning.",
+        "A workout for your intellect.",
+        "Train your mind to see beyond the obvious.",
+      ];
+
       function appendMessage(sender, text) {
-        const msgDiv = document.createElement("div");
-        msgDiv.className = `message ${sender}-message`;
-        msgDiv.innerHTML = sender === "bot" ? marked.parse(text) : text;
-        chatBox.appendChild(msgDiv);
+        const div = document.createElement("div");
+        div.className = `message ${sender}-message`;
+        div.innerHTML =
+          sender === "bot" ? marked.parse(text) : escapeHTML(text);
+        chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
       }
 
-      function showLoadingMessage() {
-        const loadingId = "loading-" + Date.now();
-        const loadingDiv = document.createElement("div");
-        loadingDiv.className = "message bot-message";
-        loadingDiv.id = loadingId;
-        loadingDiv.innerText = "...";
-        chatBox.appendChild(loadingDiv);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        return loadingId;
+      function escapeHTML(str) {
+        return str
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
       }
 
-      function removeLoadingMessage(id) {
+      function showLoading() {
+        const id = "load-" + Date.now();
+        const div = document.createElement("div");
+        div.className = "message bot-message loading-dots";
+        div.id = id;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return id;
+      }
+
+      function removeLoading(id) {
         const el = document.getElementById(id);
         if (el) el.remove();
       }
@@ -1611,96 +1511,19 @@
         sendMessage();
       }
 
-      async function startQuiz() {
-        useSuggestion("Start a quiz");
-        const loadingId = showLoadingMessage();
-        try {
-          const response = await fetch(
-            "https://opentdb.com/api.php?amount=1&type=multiple",
-          );
-          const data = await response.json();
-          removeLoadingMessage(loadingId);
-          if (data.results && data.results.length > 0) {
-            const quiz = data.results[0];
-            chatMode = "quiz";
-            const decodeHTML = (html) => {
-              const txt = document.createElement("textarea");
-              txt.innerHTML = html;
-              return txt.value;
-            };
-            currentChallengeAnswer = decodeHTML(quiz.correct_answer);
-            let options = [...quiz.incorrect_answers, quiz.correct_answer];
-            options.sort(() => Math.random() - 0.5);
-            let messageText = `**Trivia Time!** (${quiz.category})\n\n*${decodeHTML(quiz.question)}*\n\n`;
-            options.forEach((opt, index) => {
-              messageText += `${index + 1}. ${decodeHTML(opt)}\n`;
-            });
-            messageText += `\n*(Type your guess below)*`;
-            appendMessage("bot", messageText);
-          }
-        } catch (error) {
-          removeLoadingMessage(loadingId);
-          appendMessage(
-            "bot",
-            "Oops, I couldn't reach the Quiz API right now. Please try again later!",
-          );
-        }
-      }
-
-      async function startRiddle() {
-        useSuggestion("Give me a random riddle");
-        const loadingId = showLoadingMessage();
-        try {
-          const response = await fetch("https://riddles-api.vercel.app/random");
-          const data = await response.json();
-          removeLoadingMessage(loadingId);
-          if (data.riddle && data.answer) {
-            chatMode = "riddle";
-            currentChallengeAnswer = data.answer;
-            appendMessage(
-              "bot",
-              `Here is a riddle for you:\n\n**${data.riddle}**\n\n*(Take a guess!)*`,
-            );
-          }
-        } catch (error) {
-          removeLoadingMessage(loadingId);
-          chatMode = "riddle";
-          currentChallengeAnswer = "A map";
-          appendMessage(
-            "bot",
-            `Here is a riddle for you:\n\n**I have cities, but no houses. I have mountains, but no trees. I have water, but no fish. What am I?**\n\n*(Take a guess!)*`,
-          );
-        }
-      }
-
-      function handleGlobalReveal() {
-        if (chatMode === "quiz" || chatMode === "riddle") {
-          appendMessage("user", "I give up, please give me the answer.");
-          appendMessage(
-            "bot",
-            `No problem! The correct answer was: **${currentChallengeAnswer}**\n\nLet's keep chatting or try another one!`,
-          );
-          chatMode = "normal";
-          currentChallengeAnswer = "";
-        } else {
-          useSuggestion("I give up, please give me the answer.");
-        }
-      }
-
+      /* ─── SEND MESSAGE ──────────────────── */
       async function sendMessage() {
         const message = userInput.value.trim();
         if (!message) return;
 
+        // Hide hero on first real message
         if (isFirstMessage) {
           heroArea.style.display = "none";
           isFirstMessage = false;
         }
 
-        if (
-          message === "Start a quiz" ||
-          message === "Give me a random riddle"
-        ) {
-          appendMessage("user", message);
+        // Internal markers from quiz/riddle launchers — just show user msg
+        if (message === "__quiz__" || message === "__riddle__") {
           userInput.value = "";
           return;
         }
@@ -1708,6 +1531,7 @@
         appendMessage("user", message);
         userInput.value = "";
 
+        // Quiz / riddle answer handling
         if (chatMode === "quiz" || chatMode === "riddle") {
           const guess = message.toLowerCase();
           const answer = currentChallengeAnswer.toLowerCase();
@@ -1717,373 +1541,668 @@
             guess.includes("give up") ||
             guess.includes("answer")
           ) {
-            handleGlobalReveal();
+            revealChallenge();
             return;
           }
-
           if (
             (answer.includes(guess) && guess.length > 2) ||
             guess === answer
           ) {
             appendMessage(
               "bot",
-              `🎉 **Correct!** The answer is **${currentChallengeAnswer}**.`,
+              `🎉 **Correct!** The answer was **${currentChallengeAnswer}**.`,
             );
             incrementSolved();
             chatMode = "normal";
           } else {
             appendMessage(
               "bot",
-              `Not quite! Keep guessing, or click "Reveal".`,
+              `Not quite! Keep guessing, or click **Reveal**.`,
             );
           }
           return;
         }
 
-        const loadingId = showLoadingMessage();
+        const loadId = showLoading();
         try {
-          const response = await fetch("/get_response", {
+          const res = await fetch("/get_response", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: message }),
+            body: JSON.stringify({ message }),
           });
-          const data = await response.json();
-          removeLoadingMessage(loadingId);
+          const data = await res.json();
+          removeLoading(loadId);
           appendMessage("bot", data.reply);
-        } catch (error) {
-          removeLoadingMessage(loadingId);
-          appendMessage("bot", "Error: Check your server.");
+        } catch {
+          removeLoading(loadId);
+          appendMessage(
+            "bot",
+            "⚠️ Could not reach the server. Make sure the backend is running.",
+          );
         }
       }
 
-      function handleKeyPress(event) {
-        if (event.key === "Enter") sendMessage();
+      function handleKeyPress(e) {
+        if (e.key === "Enter") sendMessage();
+      }
+
+      /* ─── QUIZ ──────────────────────────── */
+      async function startQuiz() {
+        if (isFirstMessage) {
+          heroArea.style.display = "none";
+          isFirstMessage = false;
+        }
+        appendMessage("user", "Quiz me!");
+        const loadId = showLoading();
+        try {
+          const res = await fetch(
+            "https://opentdb.com/api.php?amount=1&type=multiple",
+          );
+          const data = await res.json();
+          removeLoading(loadId);
+          if (data.results?.length) {
+            const q = data.results[0];
+            const decode = (s) => {
+              const t = document.createElement("textarea");
+              t.innerHTML = s;
+              return t.value;
+            };
+            chatMode = "quiz";
+            currentChallengeAnswer = decode(q.correct_answer);
+            const opts = [...q.incorrect_answers, q.correct_answer].sort(
+              () => Math.random() - 0.5,
+            );
+            let txt = `**Trivia!** *(${q.category})*\n\n*${decode(q.question)}*\n\n`;
+            opts.forEach((o, i) => {
+              txt += `${i + 1}. ${decode(o)}\n`;
+            });
+            txt += "\n*(Type your answer below)*";
+            appendMessage("bot", txt);
+          }
+        } catch {
+          removeLoading(loadId);
+          appendMessage(
+            "bot",
+            "Couldn't reach the Quiz API right now. Try again!",
+          );
+        }
+      }
+
+      /* ─── RIDDLE ────────────────────────── */
+      async function startRiddle() {
+        if (isFirstMessage) {
+          heroArea.style.display = "none";
+          isFirstMessage = false;
+        }
+        appendMessage("user", "Give me a riddle!");
+        const loadId = showLoading();
+        try {
+          const res = await fetch("https://riddles-api.vercel.app/random");
+          const data = await res.json();
+          removeLoading(loadId);
+          if (data.riddle && data.answer) {
+            chatMode = "riddle";
+            currentChallengeAnswer = data.answer;
+            appendMessage(
+              "bot",
+              `Here is a riddle:\n\n**${data.riddle}**\n\n*(Take a guess!)*`,
+            );
+          }
+        } catch {
+          removeLoading(loadId);
+          chatMode = "riddle";
+          currentChallengeAnswer = "A map";
+          appendMessage(
+            "bot",
+            `**I have cities but no houses. I have mountains but no trees. I have water but no fish. What am I?**\n\n*(Take a guess!)*`,
+          );
+        }
+      }
+
+      function revealChallenge() {
+        appendMessage("user", "I give up — reveal the answer.");
+        appendMessage(
+          "bot",
+          `No worries! The answer was: **${currentChallengeAnswer}**\n\nWant to try another?`,
+        );
+        chatMode = "normal";
+        currentChallengeAnswer = "";
+      }
+
+      function handleGlobalReveal() {
+        if (chatMode === "quiz" || chatMode === "riddle") {
+          revealChallenge();
+        } else {
+          useSuggestion("Tell me something surprising.");
+        }
+      }
+
+      /* ─── OVERLAYS ──────────────────────── */
+      function openGameOverlay() {
+        document.getElementById("game-overlay").classList.add("active");
+        openGame("menu");
+      }
+      function closeGameOverlay() {
+        document.getElementById("game-overlay").classList.remove("active");
+        stopAllTimers();
       }
       function toggleAbout() {
         document.getElementById("about-overlay").classList.toggle("active");
       }
-      function toggleGame() {
-        const overlay = document.getElementById("game-overlay");
-        overlay.classList.toggle("active");
-        if (overlay.classList.contains("active")) openGame("menu");
+
+      function openGame(name) {
+        stopAllTimers();
+        document
+          .querySelectorAll(".game-view")
+          .forEach((v) => v.classList.remove("active"));
+        document.getElementById("view-" + name).classList.add("active");
+        if (name === "scramble") initScramble();
+        if (name === "math") initMath();
+        if (name === "color") startColorGame();
       }
 
-      function openGame(gameType) {
-        document.getElementById("game-menu-view").style.display = "none";
-        document.getElementById("game-scramble-view").style.display = "none";
-        document.getElementById("game-math-view").style.display = "none";
-        document.getElementById("game-color-view").style.display = "none";
+      /* ════════════════════════════════════════
+   TIMER UTILITY
+════════════════════════════════════════ */
+      const timers = {};
 
-        if (gameType === "menu")
-          document.getElementById("game-menu-view").style.display = "block";
-        else if (gameType === "scramble") {
-          document.getElementById("game-scramble-view").style.display = "block";
-          loadNewScramble();
-        } else if (gameType === "math") {
-          document.getElementById("game-math-view").style.display = "block";
-          loadNewMath();
-        } else if (gameType === "color") {
-          document.getElementById("game-color-view").style.display = "block";
-          loadNewColor();
-        }
+      function startTimerBar(id, barEl, seconds, onExpire) {
+        clearInterval(timers[id]);
+        let elapsed = 0;
+        const totalMs = seconds * 1000;
+        const interval = 100;
+        barEl.style.width = "100%";
+        barEl.classList.remove("danger");
+
+        timers[id] = setInterval(() => {
+          elapsed += interval;
+          const pct = Math.max(0, 100 - (elapsed / totalMs) * 100);
+          barEl.style.width = pct + "%";
+          if (pct < 30) barEl.classList.add("danger");
+          if (elapsed >= totalMs) {
+            clearInterval(timers[id]);
+            barEl.style.width = "0%";
+            onExpire();
+          }
+        }, interval);
       }
 
-      // -- Scramble Logic --
-      const backupDB = {
+      function stopAllTimers() {
+        Object.keys(timers).forEach((k) => clearInterval(timers[k]));
+      }
+
+      /* ════════════════════════════════════════
+   WORD SCRAMBLE
+════════════════════════════════════════ */
+      const SCRAMBLE_TIME = { easy: 25, medium: 18, hard: 12 };
+      const backupWords = {
         easy: [
-          {
-            word: "CODE",
-            hint: "🧠 What word means 'instructions given to a computer'?",
-          },
-          {
-            word: "DATA",
-            hint: "🧠 What word means 'facts and statistics collected together'?",
-          },
+          { word: "CODE", hint: "Instructions given to a computer" },
+          { word: "DATA", hint: "Facts and statistics collected together" },
+          { word: "LINK", hint: "A connection between two things" },
         ],
         medium: [
           {
             word: "PYTHON",
-            hint: "🧠 What word means 'a programming language or a snake'?",
+            hint: "A programming language named after a snake",
           },
-          {
-            word: "SERVER",
-            hint: "🧠 What word means 'a computer that provides data to others'?",
-          },
+          { word: "SERVER", hint: "A computer that provides data to others" },
+          { word: "SIGNAL", hint: "An event that triggers a response" },
         ],
         hard: [
+          { word: "ALGORITHM", hint: "A step-by-step mathematical procedure" },
           {
-            word: "ALGORITHM",
-            hint: "🧠 What word means 'a step-by-step mathematical procedure'?",
+            word: "INTERFACE",
+            hint: "A point where two systems meet and interact",
           },
-          {
-            word: "NETWORK",
-            hint: "🧠 What word means 'a system of interconnected computers'?",
-          },
+          { word: "RECURSION", hint: "A function that calls itself" },
         ],
       };
-      let currentScrambleWord = "";
-      let currentScrambleDifficulty = "medium";
-      let isFetchingWord = false;
 
-      function setScrambleDifficulty(level) {
-        if (isFetchingWord) return;
-        currentScrambleDifficulty = level;
+      let scrWord = "",
+        scrDiff = "medium",
+        scrScore = 0,
+        scrStreak = 0,
+        isFetching = false;
+
+      function setScrambleDiff(d) {
+        if (isFetching) return;
+        scrDiff = d;
         document
-          .querySelectorAll(".scramble-diff")
-          .forEach((btn) => btn.classList.remove("active"));
-        document.getElementById(`scramble-${level}`).classList.add("active");
-        loadNewScramble();
+          .querySelectorAll("[id^=scr-diff]")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("scr-diff-" + d).classList.add("active");
+        initScramble();
       }
 
-      async function loadNewScramble() {
-        if (isFetchingWord) return;
-        isFetchingWord = true;
-        const wordEl = document.getElementById("scrambled-word");
-        const inputEl = document.getElementById("scramble-input");
-        const hintEl = document.getElementById("scramble-hint");
+      async function initScramble() {
+        if (isFetching) return;
+        isFetching = true;
+        stopAllTimers();
+
+        const wordEl = document.getElementById("scr-word");
+        const hintEl = document.getElementById("scr-hint");
+        const inputEl = document.getElementById("scr-input");
+
         inputEl.disabled = true;
-        wordEl.innerText = "FETCHING...";
-        wordEl.classList.add("loading-text");
-        hintEl.innerText = "Generating a new brain teaser...";
-        document.getElementById("scramble-message").innerText = "";
+        inputEl.value = "";
+        inputEl.className = "game-input";
+        wordEl.textContent = "LOADING";
+        hintEl.textContent = "Generating your word…";
+        hintEl.classList.add("loading");
+        showCombo("scr-combo", "");
 
-        let wordLength =
-          currentScrambleDifficulty === "easy"
-            ? "length=5"
-            : currentScrambleDifficulty === "medium"
-              ? "length=7"
-              : "length=9";
-        let newWordObj = null;
+        const lenMap = { easy: 5, medium: 7, hard: 9 };
+        let wordObj = null;
 
-        for (let i = 0; i < 3; i++) {
+        for (let attempt = 0; attempt < 3; attempt++) {
           try {
-            const wordRes = await fetch(
-              `https://random-word-api.herokuapp.com/word?${wordLength}`,
+            const wRes = await fetch(
+              `https://random-word-api.herokuapp.com/word?length=${lenMap[scrDiff]}`,
             );
-            const wordData = await wordRes.json();
-            const fetchedWord = wordData[0];
-            const defRes = await fetch(
-              `https://api.dictionaryapi.dev/api/v2/entries/en/${fetchedWord}`,
+            const [w] = await wRes.json();
+            const dRes = await fetch(
+              `https://api.dictionaryapi.dev/api/v2/entries/en/${w}`,
             );
-            if (!defRes.ok) continue;
-            const defData = await defRes.json();
-            let rawDef = defData[0].meanings[0].definitions[0].definition;
-            if (rawDef.endsWith(".")) rawDef = rawDef.slice(0, -1);
-            const safeRegex = new RegExp(
-              `\\b${fetchedWord.slice(0, -1)}\\w*\\b`,
-              "gi",
+            if (!dRes.ok) continue;
+            const dData = await dRes.json();
+            let def = dData[0]?.meanings[0]?.definitions[0]?.definition || "";
+            def = def.replace(/\.$/, "");
+            def = def.replace(
+              new RegExp(`\\b${w.slice(0, -1)}\\w*\\b`, "gi"),
+              "_____",
             );
-            rawDef = rawDef.replace(safeRegex, "_____");
-            if (rawDef.length > 110) rawDef = rawDef.substring(0, 107) + "...";
-            newWordObj = {
-              word: fetchedWord.toUpperCase(),
-              hint: `🧠 Question: What word means "${rawDef.toLowerCase()}"?`,
+            if (def.length > 110) def = def.substring(0, 107) + "…";
+            wordObj = {
+              word: w.toUpperCase(),
+              hint: `What word means "${def.toLowerCase()}"?`,
             };
             break;
-          } catch (err) {
-            console.log("Retrying API fetch...");
+          } catch {
+            /* retry */
           }
         }
 
-        if (!newWordObj) {
-          const list = backupDB[currentScrambleDifficulty];
-          newWordObj = list[Math.floor(Math.random() * list.length)];
+        if (!wordObj) {
+          const pool = backupWords[scrDiff];
+          wordObj = pool[Math.floor(Math.random() * pool.length)];
         }
-        currentScrambleWord = newWordObj.word;
-        let scrambled = currentScrambleWord
+
+        scrWord = wordObj.word;
+        let scr = scrWord
           .split("")
           .sort(() => 0.5 - Math.random())
           .join("");
-        while (
-          scrambled === currentScrambleWord &&
-          currentScrambleWord.length > 3
-        ) {
-          scrambled = currentScrambleWord
+        while (scr === scrWord && scrWord.length > 3)
+          scr = scrWord
             .split("")
             .sort(() => 0.5 - Math.random())
             .join("");
-        }
-        wordEl.classList.remove("loading-text");
-        wordEl.innerText = scrambled;
-        hintEl.innerText = newWordObj.hint;
+
+        wordEl.textContent = scr;
+        hintEl.textContent = "🧠 " + wordObj.hint;
+        hintEl.classList.remove("loading");
         inputEl.disabled = false;
-        inputEl.value = "";
         inputEl.focus();
-        isFetchingWord = false;
+        isFetching = false;
+
+        updateScrDisplay();
+        startTimerBar(
+          "scr",
+          document.getElementById("scr-timer-bar"),
+          SCRAMBLE_TIME[scrDiff],
+          () => {
+            scrStreak = 0;
+            updateScrDisplay();
+            inputEl.className = "game-input wrong";
+            hintEl.textContent = `⏱ Time's up! The answer was: ${scrWord}`;
+            showCombo("scr-combo", "⏱ Too slow!");
+            setTimeout(initScramble, 1800);
+          },
+        );
       }
+
+      function updateScrDisplay() {
+        document.getElementById("scr-score").textContent = scrScore;
+        document.getElementById("scr-streak").textContent = scrStreak;
+      }
+
+      function checkScramble() {
+        if (isFetching) return;
+        const inp = document.getElementById("scr-input");
+        const val = inp.value.trim().toUpperCase();
+        if (!val) return;
+
+        if (val === scrWord) {
+          stopAllTimers();
+          const timeBonus = Math.max(
+            0,
+            SCRAMBLE_TIME[scrDiff] -
+              Math.floor((Date.now() - window._scrStart) / 1000),
+          );
+          scrStreak++;
+          const pts = 10 * scrStreak + timeBonus;
+          scrScore += pts;
+          updateScrDisplay();
+          incrementSolved();
+          inp.className = "game-input correct";
+          showCombo(
+            "scr-combo",
+            scrStreak > 2 ? `🔥 x${scrStreak} STREAK! +${pts}` : `✓ +${pts}`,
+          );
+          setTimeout(initScramble, 900);
+        } else {
+          scrStreak = 0;
+          updateScrDisplay();
+          inp.className = "game-input wrong";
+          inp.value = "";
+          showCombo("scr-combo", "✗ Wrong — try again");
+          setTimeout(() => {
+            inp.className = "game-input";
+            showCombo("scr-combo", "");
+          }, 700);
+        }
+      }
+      window._scrStart = Date.now();
 
       function revealScramble() {
-        if (isFetchingWord) return;
-        document.getElementById("scramble-message").innerText =
-          `The answer is: ${currentScrambleWord}`;
-        document.getElementById("scramble-message").style.color = "#94a3b8";
-        setTimeout(loadNewScramble, 1800);
+        if (isFetching) return;
+        stopAllTimers();
+        scrStreak = 0;
+        updateScrDisplay();
+        document.getElementById("scr-hint").textContent = `Answer: ${scrWord}`;
+        showCombo("scr-combo", "👁 Revealed");
+        setTimeout(initScramble, 1500);
       }
 
-      function checkScrambleAnswer() {
-        if (isFetchingWord) return;
-        const input = document.getElementById("scramble-input");
-        const val = input.value.trim().toLowerCase();
-        if (
-          val === "give me the answer" ||
-          val === "answer" ||
-          val === "show answer"
-        ) {
-          revealScramble();
-          return;
-        }
-        if (val.toUpperCase() === currentScrambleWord) {
-          document.getElementById("scramble-message").innerText = "Correct! 🌟";
-          document.getElementById("scramble-message").style.color = "#38bdf8";
-          incrementSolved();
-          setTimeout(loadNewScramble, 1200);
-        } else {
-          document.getElementById("scramble-message").innerText =
-            "Try again! (Or click Reveal)";
-          document.getElementById("scramble-message").style.color = "#f43f5e";
-          input.value = "";
-        }
-      }
-      function handleScrambleKeyPress(event) {
-        if (event.key === "Enter") checkScrambleAnswer();
-      }
+      /* ════════════════════════════════════════
+   MATH SPRINT
+════════════════════════════════════════ */
+      const MATH_TIME = { easy: 12, medium: 8, hard: 5 };
+      let mathAns = 0,
+        mathDiff = "medium",
+        mathScore = 0,
+        mathComboN = 1,
+        lastMathEq = "";
 
-      // -- Math Logic --
-      let currentMathAnswer = 0;
-      let currentMathDifficulty = "medium";
-      let lastMathEquation = "";
-      function setMathDifficulty(level) {
-        currentMathDifficulty = level;
+      function setMathDiff(d) {
+        mathDiff = d;
         document
-          .querySelectorAll(".math-diff")
-          .forEach((btn) => btn.classList.remove("active"));
-        document.getElementById(`math-${level}`).classList.add("active");
-        loadNewMath();
+          .querySelectorAll("[id^=math-diff]")
+          .forEach((b) => b.classList.remove("active"));
+        document.getElementById("math-diff-" + d).classList.add("active");
+        mathScore = 0;
+        mathComboN = 1;
+        updateMathDisplay();
+        initMath();
       }
-      function loadNewMath() {
-        let op, num1, num2, equation;
+
+      function initMath() {
+        stopAllTimers();
+        let n1, n2, op, eq;
+        const ops = mathDiff === "easy" ? ["+", "-"] : ["+", "-", "×"];
         do {
-          const operations =
-            currentMathDifficulty === "easy" ? ["+", "-"] : ["+", "-", "*"];
-          op = operations[Math.floor(Math.random() * operations.length)];
-          if (currentMathDifficulty === "easy") {
-            if (op === "+") {
-              num1 = Math.floor(Math.random() * 15) + 1;
-              num2 = Math.floor(Math.random() * 15) + 1;
-              currentMathAnswer = num1 + num2;
-            } else {
-              num1 = Math.floor(Math.random() * 20) + 5;
-              num2 = Math.floor(Math.random() * num1);
-              currentMathAnswer = num1 - num2;
+          op = ops[Math.floor(Math.random() * ops.length)];
+          if (mathDiff === "easy") {
+            n1 = rand(1, 15);
+            n2 = rand(1, 15);
+            if (op === "+") mathAns = n1 + n2;
+            else {
+              if (n1 < n2) [n1, n2] = [n2, n1];
+              mathAns = n1 - n2;
             }
-          } else if (currentMathDifficulty === "medium") {
-            if (op === "*") {
-              num1 = Math.floor(Math.random() * 8) + 2;
-              num2 = Math.floor(Math.random() * 8) + 2;
-              currentMathAnswer = num1 * num2;
+          } else if (mathDiff === "medium") {
+            if (op === "×") {
+              n1 = rand(2, 9);
+              n2 = rand(2, 9);
+              mathAns = n1 * n2;
             } else if (op === "+") {
-              num1 = Math.floor(Math.random() * 50) + 10;
-              num2 = Math.floor(Math.random() * 50) + 10;
-              currentMathAnswer = num1 + num2;
+              n1 = rand(10, 60);
+              n2 = rand(10, 60);
+              mathAns = n1 + n2;
             } else {
-              num1 = Math.floor(Math.random() * 80) + 20;
-              num2 = Math.floor(Math.random() * num1);
-              currentMathAnswer = num1 - num2;
+              n1 = rand(20, 80);
+              n2 = rand(0, n1);
+              mathAns = n1 - n2;
             }
           } else {
-            if (op === "*") {
-              num1 = Math.floor(Math.random() * 15) + 5;
-              num2 = Math.floor(Math.random() * 10) + 5;
-              currentMathAnswer = num1 * num2;
+            if (op === "×") {
+              n1 = rand(6, 20);
+              n2 = rand(6, 15);
+              mathAns = n1 * n2;
             } else if (op === "+") {
-              num1 = Math.floor(Math.random() * 400) + 100;
-              num2 = Math.floor(Math.random() * 400) + 100;
-              currentMathAnswer = num1 + num2;
+              n1 = rand(100, 500);
+              n2 = rand(100, 500);
+              mathAns = n1 + n2;
             } else {
-              num1 = Math.floor(Math.random() * 500) + 100;
-              num2 = Math.floor(Math.random() * num1);
-              currentMathAnswer = num1 - num2;
+              n1 = rand(100, 600);
+              n2 = rand(0, n1);
+              mathAns = n1 - n2;
             }
           }
-          equation = `${num1} ${op} ${num2}`;
-        } while (equation === lastMathEquation);
-        lastMathEquation = equation;
-        document.getElementById("math-equation").innerText = equation;
-        document.getElementById("math-input").value = "";
-        document.getElementById("math-message").innerText = "";
-        document.getElementById("math-input").focus();
+          eq = `${n1} ${op} ${n2}`;
+        } while (eq === lastMathEq);
+        lastMathEq = eq;
+
+        document.getElementById("math-eq").textContent = eq;
+        const inp = document.getElementById("math-input");
+        inp.value = "";
+        inp.className = "game-input";
+        inp.focus();
+        showCombo("math-combo-msg", "");
+        updateMathDisplay();
+
+        startTimerBar(
+          "math",
+          document.getElementById("math-timer-bar"),
+          MATH_TIME[mathDiff],
+          () => {
+            mathComboN = 1;
+            updateMathDisplay();
+            inp.className = "game-input wrong";
+            showCombo("math-combo-msg", `⏱ Answer: ${mathAns}`);
+            setTimeout(initMath, 1200);
+          },
+        );
       }
+
+      function rand(a, b) {
+        return Math.floor(Math.random() * (b - a + 1)) + a;
+      }
+
+      function updateMathDisplay() {
+        document.getElementById("math-score").textContent = mathScore;
+        document.getElementById("math-combo").textContent = `x${mathComboN}`;
+      }
+
+      function checkMath() {
+        const inp = document.getElementById("math-input");
+        const val = parseInt(inp.value.trim());
+        if (isNaN(val)) return;
+
+        if (val === mathAns) {
+          stopAllTimers();
+          mathComboN++;
+          const pts = 10 * mathComboN;
+          mathScore += pts;
+          updateMathDisplay();
+          incrementSolved();
+          inp.className = "game-input correct";
+          const msg =
+            mathComboN > 4
+              ? `⚡ INSANE x${mathComboN}! +${pts}`
+              : mathComboN > 2
+                ? `🔥 Combo x${mathComboN}! +${pts}`
+                : `✓ +${pts}`;
+          showCombo("math-combo-msg", msg);
+          setTimeout(initMath, 600);
+        } else {
+          mathComboN = 1;
+          updateMathDisplay();
+          inp.className = "game-input wrong";
+          inp.value = "";
+          showCombo("math-combo-msg", "✗ Wrong!");
+          setTimeout(() => {
+            inp.className = "game-input";
+            showCombo("math-combo-msg", "");
+          }, 600);
+        }
+      }
+
       function revealMath() {
-        document.getElementById("math-message").innerText =
-          `The answer is: ${currentMathAnswer}`;
-        document.getElementById("math-message").style.color = "#94a3b8";
-        setTimeout(loadNewMath, 1500);
-      }
-      function checkMathAnswer() {
-        const input = document.getElementById("math-input");
-        if (parseInt(input.value.trim()) === currentMathAnswer) {
-          document.getElementById("math-message").innerText =
-            "Lightning Fast! ⚡";
-          document.getElementById("math-message").style.color = "#38bdf8";
-          incrementSolved();
-          setTimeout(loadNewMath, 800);
-        } else {
-          document.getElementById("math-message").innerText =
-            "Not quite! (Or click Reveal)";
-          document.getElementById("math-message").style.color = "#f43f5e";
-          input.value = "";
-        }
-      }
-      function handleMathKeyPress(event) {
-        if (event.key === "Enter") checkMathAnswer();
+        stopAllTimers();
+        mathComboN = 1;
+        updateMathDisplay();
+        showCombo("math-combo-msg", `Answer: ${mathAns}`);
+        setTimeout(initMath, 1200);
       }
 
-      // -- Color Logic --
-      const colorData = [
-        { name: "RED", hex: "#f43f5e" },
-        { name: "BLUE", hex: "#38bdf8" },
-        { name: "GREEN", hex: "#10b981" },
-        { name: "YELLOW", hex: "#f59e0b" },
+      /* ════════════════════════════════════════
+   COLOR CLASH
+════════════════════════════════════════ */
+      const COLORS = [
+        { name: "RED", hex: "#ff4444" },
+        { name: "BLUE", hex: "#60a5fa" },
+        { name: "GREEN", hex: "#34d399" },
+        { name: "YELLOW", hex: "#fbbf24" },
+        { name: "WHITE", hex: "#f0f0f0" },
+        { name: "PINK", hex: "#f472b6" },
       ];
-      let isColorMatch = false;
-      let lastColorCombo = "";
-      function loadNewColor() {
-        let wordObj, paintObj, comboStr;
-        do {
-          isColorMatch = Math.random() > 0.5;
-          wordObj = colorData[Math.floor(Math.random() * colorData.length)];
-          if (isColorMatch) paintObj = wordObj;
-          else {
-            let options = colorData.filter((c) => c.name !== wordObj.name);
-            paintObj = options[Math.floor(Math.random() * options.length)];
-          }
-          comboStr = `${wordObj.name}-${paintObj.hex}`;
-        } while (comboStr === lastColorCombo);
-        lastColorCombo = comboStr;
-        const displayEl = document.getElementById("color-word");
-        displayEl.innerText = wordObj.name;
-        displayEl.style.color = paintObj.hex;
-        document.getElementById("color-message").innerText = "";
+      const COL_TIMES = [4, 3.5, 3, 2.5, 2, 1.8, 1.5, 1.5];
+      let colScore = 0,
+        colLives = 3,
+        colIsMatch = false,
+        colRound = 0,
+        colHiScore = 0;
+
+      function startColorGame() {
+        stopAllTimers();
+        colScore = 0;
+        colLives = 3;
+        colRound = 0;
+        colHiScore = parseInt(localStorage.getItem("colHiScore")) || 0;
+        renderLives();
+        showCombo("col-combo", "");
+
+        const gameoverEl = document.getElementById("col-gameover");
+        gameoverEl.classList.remove("active");
+        document.querySelector(".color-word-big").style.display = "";
+        document.querySelector(".color-btn-row").style.display = "";
+        document.getElementById("col-score").textContent = "0";
+
+        nextColor();
       }
-      function checkColorAnswer(userGuessedMatch) {
-        if (userGuessedMatch === isColorMatch) {
-          document.getElementById("color-message").innerText = "Sharp mind! 🧠";
-          document.getElementById("color-message").style.color = "#38bdf8";
-          incrementSolved();
-          setTimeout(loadNewColor, 600);
+
+      function nextColor() {
+        colRound++;
+        colIsMatch = Math.random() > 0.5;
+        const wordObj = COLORS[Math.floor(Math.random() * COLORS.length)];
+        const paintObj = colIsMatch
+          ? wordObj
+          : COLORS.filter((c) => c.name !== wordObj.name)[
+              Math.floor(Math.random() * (COLORS.length - 1))
+            ];
+
+        document.getElementById("col-word").textContent = wordObj.name;
+        document.getElementById("col-word").style.color = paintObj.hex;
+        document.getElementById("col-score").textContent = colScore;
+
+        const t = COL_TIMES[Math.min(colRound - 1, COL_TIMES.length - 1)];
+        startTimerBar(
+          "col",
+          document.getElementById("col-timer-bar"),
+          t,
+          () => {
+            handleColorWrong();
+          },
+        );
+      }
+
+      function answerColor(guessMatch) {
+        stopAllTimers();
+        if (guessMatch === colIsMatch) {
+          colScore += 10 + colRound;
+          showCombo(
+            "col-combo",
+            colRound > 5 ? `🔥 Fast! +${10 + colRound}` : `✓ +${10 + colRound}`,
+          );
+          document.getElementById("col-score").textContent = colScore;
+          setTimeout(() => {
+            showCombo("col-combo", "");
+            nextColor();
+          }, 300);
         } else {
-          document.getElementById("color-message").innerText =
-            "Oops, brain trick! 😵";
-          document.getElementById("color-message").style.color = "#f43f5e";
-          setTimeout(loadNewColor, 1000);
+          handleColorWrong();
         }
       }
 
+      function handleColorWrong() {
+        colLives--;
+        renderLives();
+        showCombo("col-combo", "✗");
+        if (colLives <= 0) {
+          endColorGame();
+        } else {
+          document.getElementById("col-word").style.opacity = "0.3";
+          setTimeout(() => {
+            document.getElementById("col-word").style.opacity = "1";
+            showCombo("col-combo", "");
+            nextColor();
+          }, 500);
+        }
+      }
+
+      function endColorGame() {
+        stopAllTimers();
+        if (colScore > colHiScore) {
+          colHiScore = colScore;
+          localStorage.setItem("colHiScore", colHiScore);
+        }
+        document.querySelector(".color-word-big").style.display = "none";
+        document.querySelector(".color-btn-row").style.display = "none";
+
+        const goEl = document.getElementById("col-gameover");
+        document.getElementById("col-final-score").textContent = colScore;
+        document.getElementById("col-hi-score").textContent =
+          colScore >= colHiScore && colScore > 0
+            ? "🏆 New high score!"
+            : `Best: ${colHiScore}`;
+        goEl.classList.add("active");
+      }
+
+      function renderLives() {
+        const el = document.getElementById("col-lives");
+        el.innerHTML = "";
+        for (let i = 0; i < 3; i++) {
+          const d = document.createElement("div");
+          d.className = "life-dot" + (i >= colLives ? " lost" : "");
+          el.appendChild(d);
+        }
+      }
+
+      /* ─── COMBO FLASH ───────────────────── */
+      function showCombo(id, text) {
+        const span = document.getElementById(id);
+        if (!span) return;
+        span.classList.remove("show");
+        span.textContent = text;
+        if (text)
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => span.classList.add("show")),
+          );
+      }
+
+      /* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
       window.onload = () => {
         checkDailyStreak();
-        setRandomGreeting();
+        document.getElementById("sub-greeting").textContent =
+          motivationalLines[
+            Math.floor(Math.random() * motivationalLines.length)
+          ];
         loadRandomSuggestions();
-        updateStatsDisplay();
+        updateStats();
       };
     </script>
   </body>
