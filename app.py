@@ -66,4 +66,7 @@ def get_response():
 
 # Removed debug=True for production
 if __name__ == "__main__":
-    app.run()
+    # Render provides a PORT environment variable. Fall back to 5000 for local testing.
+    port = int(os.environ.get("PORT", 5000))
+    # host="0.0.0.0" allows the server to accept external traffic on Render's network
+    app.run(host="0.0.0.0", port=port)
