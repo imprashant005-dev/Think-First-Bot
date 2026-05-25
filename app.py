@@ -64,7 +64,6 @@ def get_response():
         return jsonify({"error": "An error occurred on the server."}), 500
 
 
-# Removed debug=True for production
 if __name__ == "__main__":
     # Render provides a PORT environment variable. Fall back to 5000 for local testing.
     port = int(os.environ.get("PORT", 5000))
