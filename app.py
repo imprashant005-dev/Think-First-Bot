@@ -24,7 +24,7 @@ CRITICAL BEHAVIOR RULES (STRICTLY ENFORCED):
 4. Maintain a friendly, encouraging, and gamified tone.
 """
 
-model = genai.GenerativeModel(model_name="gemma-3-27b-it")
+model = genai.GenerativeModel(model_name="gemini-2.5-flash")
 
 chat_session = model.start_chat(
     history=[
